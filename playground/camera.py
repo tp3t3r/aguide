@@ -3,6 +3,6 @@
 import picamera
 
 camera = picamera.PiCamera()
-for i in range(1,10):
+for i in range(1,5):
     camera.capture('image' + str(i) + '.png')
     print i
