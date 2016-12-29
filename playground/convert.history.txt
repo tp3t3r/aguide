@@ -1,0 +1,794 @@
+    1  python
+    2  ls -l
+    3  date
+    4  pwd
+    5  ls -l
+    6  ps -ef
+    7  free -h
+    8  df -h
+    9  python
+   10  gcc
+   11  g++
+   12  ls -l
+   13  uptime 
+   14  nproc 
+   15  ls- l
+   16  dmesg
+   17  ls -l /dev/video0 
+   18  init 5
+   19  init 7
+   20  init 0
+   21  ll
+   22  vim interfaces
+   23  vi interfaces
+   24  vi /etc/wpa_supplicant/wpa_supplicant.conf 
+   25  sudo vi /etc/wpa_supplicant/wpa_supplicant.conf 
+   26  reboot 
+   27  cd /etc/ne
+   28  cd /etc/network/
+   29  ll
+   30  ls -l
+   31  vim /home/pi/.bashrc 
+   32  vi /home/pi/.bashrc 
+   33  vi /home/pi/.bashrc
+   34  bash
+   35  ifconfig -a
+   36  ping index.hu
+   37  ssh 
+   38  ssh 192.168.1.1
+   39  ssh 192.168.1.1 -P 443
+   40  ssh 192.168.1.1:443
+   41  ssh -P 443 192.168.1.1
+   42  ssh -p 443 192.168.1.1
+   43  arp
+   44  rarp
+   45  rarp -a
+   46  arp -a
+   47  arp
+   48  ls -l
+   49  dmesg
+   50  vim /etc/wpa_supplicant/
+   51  vim /etc/wpa_supplicant/wpa_supplicant.conf 
+   52  vi /etc/wpa_supplicant/wpa_supplicant.conf 
+   53  sudo vi /etc/wpa_supplicant/wpa_supplicant.conf 
+   54  sudo apt-get install vim
+   55  ifconfig -a
+   56  w
+   57  reboot 
+   58  ifconfig 
+   59  ping index.hu
+   60  cd /etc/network/
+   61  ll
+   62  sudo vim interfaces
+   63  sudo vi interfaces
+   64  init 6
+   65  ifconfig 
+   66  ping index.hu
+   67  sudo vi /etc/network/interfaces
+   68  reboot 
+   69  ifconfig 
+   70  ping index.hu
+   71  iwlist 
+   72  iwlist scan
+   73  vim /etc/network/interfaces.d/
+   74  cd  /etc/network/interfaces.d/
+   75  ll
+   76  cd ../
+   77  ll
+   78  vim interfaces
+   79  sudo vi interfaces
+   80  cat $_
+   81  vi /etc/wpa_supplicant/wpa_supplicant.conf:
+   82  sudo vi /etc/wpa_supplicant/wpa_supplicant.conf
+   83  sudo vi interfaces
+   84  ls -l /dev/
+   85  dmesg
+   86  sudo iwlist wlan0 scan essid "atalanta1996"
+   87  ;;
+   88  ll
+   89  cat interfaces
+   90  vim /etc/wpa_supplicant/wpa_supplicant.conf 
+   91  sudo vi /etc/wpa_supplicant/wpa_supplicant.conf 
+   92  sudo vi interfaces
+   93  sudo vi /etc/wpa_supplicant/wpa_supplicant.conf 
+   94  sudo ifup wlan0
+   95  sudo vi interfaces
+   96  sudo ifup wlan0
+   97  ifconfig 
+   98  sudo ifup wlan0
+   99  cat /etc/network/if-pre-up.d/wpasupplicant
+  100  sudo ifup wlan0
+  101  cat /var/log/debug 
+  102  ifconfig 
+  103  vim interfaces
+  104  cp interfaces interfaces.orig
+  105  sudo cp interfaces interfaces.orig
+  106  sudo vim interfaces
+  107  sudo vi interfaces
+  108  sudo ifup wlan0
+  109  sudo vi interfaces
+  110  sudo ifup wlan0
+  111  ifconfig 
+  112  w
+  113  reboot 
+  114  sudo ifdown wlan0
+  115  sudo apt-get install vim
+  116  ifconfig 
+  117  netstat -r
+  118  route
+  119  route add default gw 192.168.1.1 wlan0
+  120  sudo route add default gw 192.168.1.1 wlan0
+  121  sudo route add default gw 192.168.1.1 eth0
+  122  ifconfig 
+  123  sudo route add default gw 192.168.1.1 lo
+  124  route
+  125  sudo route add default gw 192.168.1.1 
+  126  route
+  127  sudo apt-get install vim
+  128  w
+  129  ping index.hu
+  130  route
+  131  cd /etc/network/
+  132  ll
+  133  sudo cd interfaces interfaces.orig
+  134  sudo cp interfaces interfaces.orig
+  135  sudo vi interfaces
+  136  reboot 
+  137  ifconfig 
+  138  ping index.hu
+  139  ping 8.8.8.8
+  140  sudo apt-get install vim
+  141  ls -l
+  142  vim /etc/resolv.conf 
+  143  cat /etc/resolv.conf 
+  144  ifconfig 
+  145  vim /etc/resolv.conf 
+  146  sudo vi /etc/resolv.conf 
+  147  ping index.hu
+  148  resolvconf 
+  149  resolvconf -a wlan0
+  150  echo 192.168.1.1 ~ resolvconf -a wlan0
+  151  cat /etc/resolv.conf 
+  152  w
+  153  ls
+  154  ls -l
+  155  ping 8.8.8.8
+  156  ping index.hu
+  157  ifconfig 
+  158  sudo vim /etc/network/interfaces
+  159  sudo vi /etc/network/interfaces
+  160  ssh root@192.168.1.1:443
+  161  ssh -p 443 root@192.168.1.1
+  162  ll
+  163  sudo vi /etc/ssh/sshd_config 
+  164  sudo passwd pi
+  165  echo raspberry123 | sudo passwd --stdin pi 
+  166  echo raspberry123 | sudo passwd  pi 
+  167  sudo raspi-config 
+  168  reboot 
+  169  ls -l
+  170  pwd
+  171  rout
+  172  route
+  173  ssh 
+  174  ssh -p 443 root@192.168.1.1
+  175  ssh-copy-id -p 443 root@192.168.1.1
+  176  ssh-keygen 
+  177  ssh-copy-id -p 443 root@192.168.1.1
+  178  ssh-copy-id 
+  179  ssh-copy-id -p 443 root@192.168.1.1 
+  180  ssh -p 443 root@192.168.1.1
+  181  sudo dpkg-reconfigure keyboard-configuration
+  182  ';;';"
+  183  '
+  184  @
+  185  "
+  186  reboot 
+  187  ps
+  188  netstat
+  189  netstat -anp
+  190  netstat -anp | grep ssh
+  191  sudo netstat -anp | grep ssh
+  192  dmesg
+  193  ifconfi
+  194  ifconfig 
+  195  ssh 192.168.1.1
+  196  ssh root@192.168.1.1
+  197  route
+  198  sudo route add default gw 192.168.1.1
+  199  ifconfig 
+  200  w
+  201  ifconfig 
+  202  route
+  203  route -n
+  204  ifconfig 
+  205  ssh root@192.168.1.1
+  206  ssh -p 443 root@192.168.1.1
+  207  sudo vi /etc/network/interfaces
+  208  ls -l
+  209  ifconfig 
+  210  route
+  211  ping 192.168.1.1
+  212  sudo route add default gw 192.168.1.1
+  213  route -n
+  214  ip route
+  215  sudo ip route add 191.168.1.0/24 dev wlan0
+  216  ip route
+  217  ping 192.168.1.1
+  218  ssh -p 443 root@192.168.1.1
+  219  reboot 
+  220  cd §
+  221  cd ~
+  222  ls- l
+  223  ls -l
+  224  mkdir autoguider
+  225  cd autoguider/
+  226  vim ledtest.py
+  227  vi
+  228  which python
+  229  env python
+  230  vi ~/.bashrc 
+  231  . ~/.bashrc 
+  232  vim ledtest.py
+  233  nano ledtest.py
+  234  ll
+  235  chmod +x ./ledtest.py 
+  236  ./ledtest.py 
+  237  nano ledtest.py
+  238  ./ledtest.py 
+  239  sudo ./ledtest.py 
+  240  vim ledtest.py 
+  241  nano ledtest.py 
+  242  sudo ./ledtest.py 
+  243  vim ledtest.py 
+  244  sudo apt-get update && sudo apt-get -y install vim
+  245  vim ledtest.py 
+  246  ./ledtest.py 
+  247  vim ledtest.py 
+  248  python
+  249  vim ledtest.py 
+  250  ./ledtest.py 
+  251  sudo ./ledtest.py 
+  252  vim ledtest.py 
+  253  ./ledtest.py 
+  254  vim ledtest.py 
+  255  ./ledtest.py 
+  256  ./ledtest.py &
+  257  ff
+  258  fg
+  259  vim ledtest.py 
+  260  pwd
+  261  find `pwd`
+  262  vim ~/.bashrc 
+  263  pgrep bash
+  264  /home/pi/autoguider/ledtest.py &
+  265  pgrep ledtest
+  266  pgrep ledtest.py
+  267  ps -ef | grep led
+  268  pgrep python
+  269  /home/pi/autoguider/ledtest.py &
+  270  pgrep python
+  271  vim ~/.bashrc 
+  272  reboot 
+  273  sudo reboot 
+  274  fg
+  275  ll
+  276  cd autoguider/
+  277  ls óül
+  278  sl ül
+  279  ls -l
+  280  vim ledtest.py 
+  281  vim ~/.vimrc
+  282  vim ledtest.py 
+  283  ./ledtest.py 
+  284  vim ledtest.py 
+  285  ./ledtest.py 
+  286  vim ledtest.py 
+  287  ./ledtest.py 
+  288  vim ledtest.py 
+  289  ./ledtest.py 
+  290  vim ledtest.py 
+  291  ./ledtest.py 
+  292  vim ledtest.py 
+  293  ./ledtest.py 
+  294  vim ledtest.py 
+  295  ./ledtest.py 
+  296  vim ledtest.py 
+  297  ./ledtest.py 
+  298  vim ledtest.py 
+  299  ./ledtest.py 
+  300  vim ledtest.py :wq
+  301  ll
+  302  vim ledtest.py 
+  303  top
+  304  ps -ef | grep py
+  305  fg
+  306  up
+  307  uptime 
+  308  uname -k
+  309  uname -a
+  310  ll
+  311  vim ledtest.py 
+  312  ./ledtest.py 
+  313  vim ledtest.py 
+  314  ./ledtest.py 
+  315  vim ledtest.py 
+  316  ./ledtest.py 
+  317  vim ledtest.py 
+  318  ./ledtest.py 
+  319  vim ledtest.py 
+  320  ./ledtest.py 
+  321  ps -ef | grep python
+  322  vim ~/.bashrc 
+  323  ./ledtest.py 
+  324  vim ~/.bashrc 
+  325  vim ledtest.py 
+  326  ./ledtest.py 
+  327  vim ledtest.py 
+  328  ./ledtest.py 
+  329  vim ledtest.py 
+  330  ./ledtest.py 
+  331  vim ./ledtest.py 
+  332  ./ledtest.py 
+  333  vim ./ledtest.py 
+  334  ./ledtest.py 
+  335  ls -
+  336  ll
+  337  ./ledtest.py 
+  338  ll
+  339  s ./
+  340  .-
+  341  w
+  342  top
+  343  nproc oc
+  344  cat ~/.bashrc 
+  345  ls -l
+  346  uname -a
+  347  ls -l
+  348  ls lü
+  349  ls -l
+  350  cd autoguider/
+  351  ls -l
+  352  python -m SimpleHTTPServer
+  353  sudo apt-get fswebcam
+  354  sudo apt-get install fswebcam
+  355  mkdir images
+  356  cd images/
+  357  fswebcam image.png
+  358  dmesg
+  359  ls -l
+  360  fswebcam image.jpg
+  361  ll
+  362  sudo fswebcam image.jpg
+  363  dmegs
+  364  dmesg
+  365  lsusb
+  366  dmesg
+  367  fswebcam --device /devices/platform/soc/20980000.usb/usb1/1-1/1-1.2/input/input0 image.jpg
+  368  ls -lrt /dev/
+  369  ls -l /dev/video0 
+  370  fswebcam --device /dev/v4l/by-path/platform-20980000.usb-usb-0\:1.2\:1.0-video-index0 x.jpg
+  371  ls -l
+  372  pwd
+  373  dmesg
+  374  dmesg | grep -i cam
+  375  dmesg | grep -i usb
+  376  lsmod
+  377  insmod gspca_zc3xx
+  378  find / | grep gspca_zc3xx
+  379  find / | grep grep -v /proc| grep gspca_zc3xx
+  380  ls -l
+  381  date
+  382  ls -l
+  383  clear
+  384  ls -l
+  385  w
+  386  fswebcam 
+  387  sudo modprobe bcm2835-v4l2
+  388  fswebcam 
+  389  ll
+  390  v4l2-dbg 
+  391  v4l2-dbg -D
+  392  v4l2-ctl --list-formats
+  393  d
+  394  dmesg 
+  395  cd ..
+  396  vim image_capture.pu
+  397  mv image_capture.pu image_capture.py
+  398  chmod +x image_capture.py 
+  399  ls -l
+  400  ./image_capture.py 
+  401  vim image_capture.py 
+  402  v4l2-ctl --list-formats
+  403  v4l2-ctl 
+  404  v4l2-ctl --list-devices
+  405  v4l2-ctl -k
+  406  v4l2-ctl -l
+  407  dmesg
+  408  w
+  409  dmesg
+  410  lsusb
+  411  fswebcam image.jpg
+  412  sudo apt-get motion
+  413  sudo apt-get install motion
+  414  fswebcam image.jpg
+  415  rmmod uvcvideo
+  416  dmesg
+  417  fswebcam image.jpg
+  418  fswebcam -r 640x480 --jpeg 85 -q -d /dev/video1 testimg.jpg
+  419  fswebcam -r 640x480 --jpeg 85 -q  testimg.jpg
+  420  lsusb 
+  421  sudo apt-get install cheese
+  422  v4l2-ctl -V
+  423  dmesg
+  424  cd autoguider/images/
+  425  fswebcam a.jpeg
+  426  sudo reboot
+  427  dmesg
+  428  lsusb 
+  429  find /lib/modules | grep cam
+  430  cd /tmp/
+  431  cd ~
+  432  mkdir qcdriver
+  433  cd qcdriver
+  434  wget https://sourceforge.net/projects/qce-ga/files/latest/download?source=files
+  435  ls -l
+  436  rm *
+  437  wget http://downloads.sourceforge.net/project/qce-ga/qc-usb/0.6.6/qc-usb-0.6.6.tar.gz?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fqce-ga%2Ffiles%2F&ts=1477920101&use_mirror=netcologne
+  438  ll
+  439  ls -l
+  440  mv qc-usb-0.6.6.tar.gz\?r\=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fqce-ga%2Ffiles%2F  qc-usb-0.6.6.tar.gz
+  441  tar -xvzf qc-usb-0.6.6.tar.gz 
+  442  cd qc-usb-0.6.6/
+  443  make all
+  444  apt-get list installed
+  445  apt-get list-installed
+  446  sudo apt-get list-installed
+  447  sudo apt-get 
+  448  sudo apt-get upgrade
+  449  w
+  450  df -h
+  451  reboot 
+  452  sudo reboot 
+  453  fswebcam 
+  454  fswebcam x.jpg
+  455  ls ül
+  456  ls -l
+  457  dmesg
+  458  ping index.hu
+  459  cd /tmp/
+  460  fswebcam x.jpg
+  461  fswebcam -r 1280x720 x.jpg
+  462  fswebcam -S 5 -r 1280x720 tmp.jpg 
+  463  sudo fswebcam -S 5 -r 1280x720 tmp.jpg 
+  464  sudo fswebcam -v -S 5 -r 1280x720 tmp.jpg 
+  465  sudo fswebcam -v -S 3 -r 1280x720 tmp.jpg 
+  466  sudo fswebcam -v  tmp.jpg 
+  467  sudo apt-get install uvccapture
+  468  sudo apt-get update 
+  469  raspi-config 
+  470  sudo raspi-config 
+  471  w
+  472  reboot 
+  473  sudo reboot 
+  474  ll
+  475  cd autoguider/
+  476  ll
+  477  vim stepper.py 
+  478  ./stepper.py 
+  479  vim ./stepper.py 
+  480  git diff 
+  481  ./stepper.py 5
+  482  vim stepper.py 
+  483  ./stepper.py 5
+  484  ./stepper.py -55
+  485  ./stepper.py -50
+  486  ./stepper.py 50
+  487  vim stepper.py 
+  488  python
+  489  git diff
+  490  date
+  491  ll
+  492  sudo raspi-config
+  493  udo apt-get update
+  494  sudo apt-get update
+  495  sudo apt-get install python-picamera
+  496  ll
+  497  vim stepper.py 
+  498  vim camera.py
+  499  cat stepper.py 
+  500  head stepper.py 
+  501  vim camera.py
+  502  chmod +x camera.py 
+  503  ./camera.py 
+  504  w
+  505  reboot 
+  506  sudo reboot 
+  507  ll
+  508  cd autoguider/
+  509  ll
+  510  vim stepper.py 
+  511  python
+  512  vim stepper.py 
+  513  git diff
+  514  git checkout -- stepper
+  515  git checkout -- stepper.py
+  516  git status
+  517  rm image*.png
+  518  git status
+  519  vim stepper.py 
+  520  ./stepper.py 1ö
+  521  vim stepper.py 
+  522  ./stepper.py 1
+  523  ./stepper.py 2
+  524  ./stepper.py -2
+  525  git status
+  526  git diff camera.py
+  527  cat camera.py
+  528  cat stream.py 
+  529  ll
+  530  cat ../flask-video-streaming/app.py 
+  531  cat ../flask-video-streaming/camera_pi.py
+  532  ll
+  533  git diff
+  534  git status
+  535  git rm *.pyc
+  536  git status
+  537  cat stream.py 
+  538  rm stream.py 
+  539  git status
+  540  cat camera.py 
+  541  git add .
+  542  git commit -m "basic capture added"
+  543  ll
+  544  git remote add origin https://github.com/tp3t3r/aguide.git
+  545  git man push
+  546  man git push
+  547  git push -u origin master
+  548  cat ~/.ssh/id_rsa.pub 
+  549  cd ..
+  550  ls
+  551  cd flask-video-streaming/
+  552  ll
+  553  git status
+  554  ./app.py 
+  555  sudo reboot 
+  556  cd flask-video-streaming/
+  557  ll
+  558  cd ../autoguider/
+  559  ll
+  560  vim camera.py 
+  561  cat ../flask-video-streaming/camera_pi.py| grep 640
+  562  vim camera.py 
+  563  ./camera.py 
+  564  sudo raspi-config 
+  565  sudo reboot 
+  566  cd autoguider/
+  567  ./camera.py 
+  568  raspistill 
+  569  ./camera.py 
+  570  sudo ./camera.py 
+  571  cd ../flask-video-streaming/
+  572  ps -ef | grep app
+  573  ./app.py 
+  574  ps -ef | grep app
+  575  kill -9 1845
+  576  ./app.py 
+  577  sudo raspi-config 
+  578  ps -ef |grep vnc
+  579  kill 1504
+  580  cat /home/pi/.vnc/xstartup
+  581  ps -ef |grep vnc
+  582  sudo vim /etc/init.d/vncboot
+  583  chmod 755 /etc/init.d/vncboot
+  584  sudo chmod 755 /etc/init.d/vncboot
+  585  sudo update-rc.d: using dependency based boot sequencing
+  586  vim /etc/init.d/vncboot
+  587  sudo vim /etc/init.d/vncboot
+  588  :wq
+  589  cd /etc/rc.d
+  590  cd /etc/init.d/
+  591  ll
+  592  cd ..
+  593  ls 
+  594  cd rc3.d/.d
+  595  cd rc3.d/
+  596  ll
+  597  ln -s ../init.d/vncboot S05vnc
+  598  sudo ln -s ../init.d/vncboot S05vnc
+  599  cat ../init.d/vncboot
+  600  sysctl 
+  601  service
+  602  sudo update-rc.d vncboot  defaults
+  603  ll
+  604  ls -l ../rc5.d/
+  605  sudo update-rc.d vncboot  defaults
+  606  ls -l ../rc6.d/
+  607  ll
+  608  reboot 
+  609  sudo reboot 
+  610  ll
+  611  cd flask-video-streaming/
+  612  ll
+  613  ps -ef |grep vnc
+  614  ps -ef | grep x
+  615  sudo apt-get install tightvncserver
+  616  tightvncserver
+  617  vncserver :0 -geometry 1680x1050 -depth 24
+  618  ps -ef | grep vnc
+  619  cat /home/pi/.vnc/raspberrypi:1.log
+  620  ip addr
+  621  sudo netstat -a -n -p
+  622  sudo netstat -a -n -p  | grep vnc
+  623  cd ../autoguider/
+  624  ll
+  625  mkdir playground
+  626  mv * playground/
+  627  ll
+  628  git status
+  629  git add playground/
+  630  git status
+  631  vm playground/* .
+  632  mv playground/* .
+  633  git status
+  634  git reset -- playground/
+  635  git status
+  636  ll
+  637  git status
+  638  git diff camera.py
+  639  ./camera.py 
+  640  ll
+  641  git status
+  642  git mv *.py playground/
+  643  git stats
+  644  git status
+  645  rm *.png
+  646  ll
+  647  git status
+  648  git add playground/
+  649  git status
+  650  git commit -m "playground folder created"
+  651  git push origin master
+  652  git config --global username=tp3t3r
+  653  git config --global user.name=tp3t3r
+  654  git remote set-url origin git@github.com:tp3t3r/aguide.git
+  655  git push origin master
+  656  ll
+  657  vim main.py
+  658  /usr/bin/env python
+  659  uname -a
+  660  vim main.py 
+  661  ps -ef
+  662  ps -ef | grep vnc
+  663  /etc/init.d/vncboot start
+  664  ps -ef | grep vnc
+  665  sudo netstat -a -n -p | grep vnc
+  666  ls -l /tmp/.X0-lock
+  667  date
+  668  rm /tmp/.X0-lock
+  669  sudo rm /tmp/.X0-lock
+  670  /etc/init.d/vncboot start
+  671  ls -l /tmp/
+  672  sudo rm -rf /tmp/*
+  673  /etc/init.d/vncboot start
+  674  sudo netstat -a -n -p | grep vnc
+  675  ls -l /tmp/.X11-unix/X0
+  676  sudo rm -rf /tmp/*
+  677  ls -l /tmp/.X11-unix/X0
+  678  sudo rm -f ls -l /tmp/.X11-unix/X0
+  679  sudo rm -f /tmp/.X11-unix/X0
+  680  ll
+  681  /etc/init.d/vncboot start
+  682  sudo netstat -a -n -p | grep vnc
+  683  w
+  684  /etc/init.d/vncboot stop
+  685  rm /etc/rc3.d/S05vnc 
+  686  sudo rm /etc/rc3.d/S05vnc 
+  687  sudo update-rc.d vncboot  defaults
+  688  sudo vim /etc/init.d/vncboot 
+  689  sudo update-rc.d vncboot  defaults
+  690  /etc/init.d/vncboot stop
+  691  sudo vim /etc/init.d/vncboot 
+  692  sudo update-rc.d vncboot  defaults
+  693  cd autoguider/
+  694  ll
+  695  vim main.py 
+  696  cat main.py 
+  697  vim image.py
+  698  cat main.py 
+  699  vim image.py
+  700  ll
+  701  python main.py 
+  702  vim stepperDriver.py
+  703  python main.py 
+  704  cat main.py 
+  705  vim main.py 
+  706  python main.py 
+  707  vim main.py 
+  708  vim image.py
+  709  python main.py 
+  710  vim image.py
+  711  python main.py 
+  712  vim image.py
+  713  vim main.py 
+  714  python main.py 
+  715  vim main.py 
+  716  vim image.py
+  717  python main.py 
+  718  vim image.py
+  719  python main.py 
+  720  vim image.py
+  721  python main.py 
+  722  vim stepperDriver.py
+  723  vim main.py 
+  724  python main.py 
+  725  vim main.py 
+  726  vim stepperDriver.py
+  727  python main.py 
+  728  vim stepperDriver.py
+  729  vim main.py 
+  730  vim stepperDriver.py
+  731  python main.py 
+  732  vim stepperDriver.py
+  733  python main.py 
+  734  vim stepperDriver.py
+  735  python main.py 
+  736  vim stepperDriver.py
+  737  vim main.py 
+  738  python main.py 
+  739  vim main.py 
+  740  git status
+  741  git diff
+  742  echo testimage.png > .gitignore
+  743  git status
+  744  git add *.py
+  745  vim .gitignore 
+  746  git status
+  747  git add .gitignore 
+  748  git status
+  749  ll
+  750  git add .
+  751  git status
+  752  git commit -m "basic concept"
+  753  git push origin master
+  754  sudo reboot
+  755  w
+  756  ps -ef | grep vnc
+  757  cd flask-video-streaming/a
+  758  cd flask-video-streaming/
+  759  ./app.py 
+  760  ll
+  761  cd ../autoguider/
+  762  ll
+  763  convert
+  764  python -m SimleHTTPServer
+  765  python -m SimpleHTTPServer
+  766  /usr/bin/python: No module named SimleHTTPServer
+  767  pi@raspberrypi:~/autoguider $
+  768  ps -ef | grep app
+  769  kill -9 3241
+  770  ps -ef | grep app
+  771  onvert testimage.png -fuzz 30% -fill black -opaque black   -define connected-components:verbose=true             -define connected-components:area-threshold=500     
+  772  ll
+  773  convert testimage.png -fuzz 30% -fill black -opaque black -define connected-components:verbose=true -define connected-components:area-threshold=500 -connected-components 8 -auto-level output.png
+  774  python -m SimpleHTTPServer &
+  775  ll
+  776  convert testimage.png -alpha -extract edge 2 output.png 
+  777  convert testimage.png -alpha extract edge 2 output.png 
+  778  convert testimage.png -alpha extract -edge 2 output.png 
+  779  convert testimage.png -alpha extract -edge 6 output.png 
+  780  convert testimage.png -alpha extract -edge 16 output.png 
+  781  convert testimage.png -alpha extract -edge 1 output.png 
+  782  convert testimage.png -alpha extract -edge .1 output.png 
+  783  convert testimage.png -alpha extract -edge ö output.png 
+  784  convert testimage.png -alpha extract -edge 0 output.png 
+  785  ll
+  786  git status
+  787  vim .gitignore 
+  788  git status
+  789  git log
+  790  convert testimage.png -depth 1 output.png 
+  791  convert testimage.png -depth 4 output.png 
+  792  convert testimage.png -depth 2 output.png 
+  793  convert testimage.png -depth 1 output.png 
+  794  history > convert.history.txt
