@@ -4,9 +4,12 @@ import png
 
 image = png.Reader("../testimage.png")
 try:
-    data = image.read()[2]
+    data = image.read()
+    print data[0], data[1]
+    print data[3]
     for line in data:
-        for pixel in line:
-            print pixel
+        pass
+        #for pixel in line:
+        #    print pixel
 except:
     print "shit."
