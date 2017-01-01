@@ -24,21 +24,48 @@ class ImageProcessor:
         self.border = border # pixels
         self.lights = []
         self.thold = thold # factor
+        imagedata = None
         try:
-            imagedata = png.Reader(pngfile)
+            reader = png.Reader(pngfile)
+            imagedata = reader.read()
         except:
-            raise ValueError("File can't be opened")
-        if imagedata[3].bitdepth != 8:
+            raise Exception("File can't be opened")
+        print imagedata[3]
+        if imagedata[3]['bitdepth'] != 8:
             raise ValueError("Only 8-bit images are supported")
         self.width = imagedata[0]
         self.height = imagedata[1]
         for line in imagedata[2]:
             self.data.append(line)
 
-    def printMask(self, output="mask.png")
-        png.Writer(self.width, self.height)
+    def checkTreshold(self, pixel):
+        if pixel > 255 * self.thold:
+            return True
+        return False
+
+    def printMask(self, output="mask.png"):
+        writer = png.Writer(self.width, self.height, greyscale=True)
         data = []
-        #todo print mask
+        mask_color = 255
+        for y in range(self.height):
+            line = []
+            for x in range(self.width):
+                pixel = self.data[y][x]
+                '''
+                if self.checkTreshold(pixel):
+                    pixel = mask_color
+                else:
+                    pixel = 0
+                '''
+                line.append(pixel)
+                line.append(pixel)
+                line.append(pixel)
+            data.append(line)
+        try:
+            mfd = open(output, 'wb')
+            writer.write(mfd, data)
+        except:
+            raise Exception('Can\'t write mask file: %s' % str(output))
 
     def seekByThreshold(self):
         def checkCoords(x,y):
