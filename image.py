@@ -1,10 +1,33 @@
 import png
+import time, picamera, numpy
 
 class Capture:
-    def __init__(self):
-        pass
+    def __init__(self, width=640, height=480, fps=24):
+        self.width=width
+        self.height=height
+        self.itype='rgb'
+        self.fps=fps
+        self.cam = picamera.PiCamera()
+        self.cam.resolution=((self.width, self.height))
+        self.cam.ISO = 800
+        self.frame = numpy.empty((self.width * self.height * 3,), dtype=numpy.uint8)
+        time.sleep(2)
+
+    def getSize(self):
+        return (self.width,self.height)
+
     def getImage(self):
-        pass
+        self.cam.capture(self.frame, self.itype)
+        return self.frame
+
+    def saveBuffer(self, filename):
+        from PIL import Image
+        newbuf = []
+        for i in range(0, len(self.frame) - 1, 3):
+            newbuf.append((self.frame[i], self.frame[i+1], self.frame[i+2]))
+        img = Image.new('RGB', (self.width, self.height))
+        img.putdata(newbuf)
+        img.save(filename)
 
 class Processor:
     def __init__(self):
@@ -57,9 +80,8 @@ class ImageProcessor:
                 else:
                     pixel = 0
                 '''
-                line.append(pixel)
-                line.append(pixel)
-                line.append(pixel)
+                for i in range(3):
+                    line.append(pixel)
             data.append(line)
         try:
             mfd = open(output, 'wb')
