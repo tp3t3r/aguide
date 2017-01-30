@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-
+import time
 from image import Capture
-from PIL import Image
 
 C = Capture()
-data = C.getImage()
+C.getImage()
 C.saveBuffer('capture.png')
+
 
