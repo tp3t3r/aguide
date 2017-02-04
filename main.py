@@ -8,21 +8,15 @@ from image import Capture, Processor
 from stepperDriver import stepperDriver
 
 def main():
-    #get an image
     cpt = Capture()
-    skyline = cpt.getImage()
-
-    #find the brightest spot
-    proc = Processor()
-    base_area = proc.findBrightest(skyline)
 
     #stepper's command
     threshold = 2
     stepper = stepperDriver(threshold)
     move = 0
     while True:
-        #get another image - from the same area
-        new_area = proc.crop(cpt.getImage(), base_area)
+        #get another image
+        proc = FrameProcesspor(cpt.getImage(), *(cpt.getSize()))
 
         #calcuate delta
         command = proc.getDelta(new_area, base_area)
