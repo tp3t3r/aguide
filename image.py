@@ -8,14 +8,21 @@ class Capture:
         self.itype='rgb'
         self.cam = picamera.PiCamera()
         self.cam.resolution=((self.width, self.height))
-        self.cam.awb_mode = 'auto'
         self.cam.vflip = vflip
         self.cam.hflip = hflip
+        self.cam.framerate = 1
         self.cam.color_effects = (128,128)
-        self.cam.exposure_mode ='nightpreview'
-        #self.cam.shutter_speed = 1000000
+        #print self.cam.color_effects
+        self.cam.exposure_mode ='verylong'
+        #print self.cam.exposure_mode
+        self.cam.shutter_speed = 400000
+        #print self.cam.shutter_speed
+        self.cam.awb_mode = 'tungsten'
+        #print self.cam.awb_mode
         self.cam.meter_mode = 'average'
+        #print self.cam.meter_mode
         self.cam.ISO = 800
+        #print self.cam.ISO
         self.frame = numpy.empty((self.width * self.height * 3,), dtype=numpy.uint8)
         #self.frame_gs = numpy.empty((self.width * self.height,), dtype=numpy.uint8)
         self.frame_gs = []
