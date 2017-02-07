@@ -48,6 +48,22 @@ class FrameProcessor:
         self.width = width
         self.height = height
 
+        from proclib import proclib
+        self.proclib = proclib()
+
+    #wrapped from proclib
+    def applyThreshold(self, tval = 200):
+        self.proclib.applyThreshold(self.frame, tval)
+
+    #wrapped from proclib
+    def getLibVersion(self):
+        self.proclib.getVer()
+
+    def saveFrame(self, filename):
+        img = Image.new('L', (self.width, self.height))
+        img.putdata(self.frame)
+        img.save(filename)
+
     def findBrightest(grid = 20):
         if self.width % grid or self.height % grid:
             raise ValueError("invalid width/height")
