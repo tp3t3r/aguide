@@ -14,7 +14,7 @@ char * apply_threshold(const char* img, unsigned width, unsigned height, unsigne
 
     if (img) {
         for(unsigned i = 0; i < width*height; i++) {
-            buffer[i] = *(img+i) <= tval ? *(img+i):0xFF;
+            buffer[i] = *(img+i) < tval ? *(img+i):0xFF;
         }
         return buffer;
     } else {

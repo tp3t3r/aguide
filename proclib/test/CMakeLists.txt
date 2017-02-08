@@ -5,6 +5,8 @@ link_directories(${CMAKE_CURRENT_BINARY_DIR})
 add_executable(${t_exe}
     test_imgproc.cc
 )
+message("+++" ${CMAKE_CURRENT_BINARY_DIR})
+message("+++" ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(${t_exe} ${libproc})
 
 add_test(test1 ${t_exe})
