@@ -10,7 +10,7 @@ class Capture:
         self.cam.resolution=((self.width, self.height))
         self.cam.vflip = vflip
         self.cam.hflip = hflip
-        self.cam.framerate = 1
+        self.cam.framerate = 2
         self.cam.color_effects = (128,128)
         #print self.cam.color_effects
         self.cam.exposure_mode ='verylong'
@@ -32,6 +32,7 @@ class Capture:
         return (self.width,self.height)
 
     def getImage(self):
+        import time
         self.cam.capture(self.frame, self.itype)
         #keep every third value per pixel - it's grayscale anyways...
         self.frame_gs = [ pix for pix in self.frame[::3] ]
@@ -52,8 +53,9 @@ class FrameProcessor:
         self.proclib = proclib()
 
     #wrapped from proclib
-    def applyThreshold(self, tval = 200):
-        self.proclib.applyThreshold(self.frame, tval)
+    def applyThreshold(self, tval = 50):
+        self.frame = self.proclib.applyThreshold(self.frame, tval)
+        #self.frame = [ 255 if x > tval else x for x in self.frame ]
 
     #wrapped from proclib
     def getLibVersion(self):

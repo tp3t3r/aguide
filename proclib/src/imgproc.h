@@ -2,6 +2,6 @@
 
 extern "C" {
     const char* get_lib_version(void);
-    char* apply_threshold(const char* img, unsigned width, unsigned height, unsigned char tval);
+    unsigned char* apply_threshold(const unsigned char* img, unsigned width, unsigned height, unsigned char tval);
 }
 
