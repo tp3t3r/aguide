@@ -10,12 +10,12 @@ class Capture:
         self.cam.resolution=((self.width, self.height))
         self.cam.vflip = vflip
         self.cam.hflip = hflip
-        self.cam.framerate = 2
+        self.cam.framerate = 1
         self.cam.color_effects = (128,128)
         #print self.cam.color_effects
         self.cam.exposure_mode ='verylong'
         #print self.cam.exposure_mode
-        self.cam.shutter_speed = 400000
+        self.cam.shutter_speed = 600000
         #print self.cam.shutter_speed
         self.cam.awb_mode = 'tungsten'
         #print self.cam.awb_mode

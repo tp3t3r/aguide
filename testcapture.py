@@ -3,14 +3,19 @@ import time
 from image import Capture,FrameProcessor
 
 C = Capture(width=640, height=480, vflip=True, hflip=True)
-for v in range(0,255, 30):
+for i in range(10):
     print "start", time.time()
-    fp = FrameProcessor(C.getImage(), *(C.getSize()))
+    data = C.getImage()
+    fp = FrameProcessor(data, *(C.getSize()))
+    fpo = FrameProcessor(data, *(C.getSize()))
     print "--get", time.time()
-    fp.applyThreshold(v)
+    fp.applyThreshold(50)
+    fpo.applyThreshold(255)
     print "--thold", time.time()
-    fp.saveFrame('buffer_' + str(v) + '.png')
+    fp.saveFrame('buffer_' + str(i) + '.png')
+    fpo.saveFrame('buffer_orig_' + str(i) + '.png')
     print "--save", time.time()
+    time.sleep(10);
 
 
 
