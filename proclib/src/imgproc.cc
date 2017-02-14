@@ -1,23 +1,36 @@
 #include "imgproc.h"
-#include "stdio.h"
+#include <stdio.h>
+#include <string.h>
 
+//global image data
+unsigned img_width = 0;
+unsigned img_height = 0;
+unsigned char* img_buffer = 0;
+
+//functions
+void init_image(unsigned width, unsigned height, const unsigned char* data) {
+    img_width = width;
+    img_height = height;
+    if (img_buffer) {
+        delete [] img_buffer;
+    }
+    img_buffer = new unsigned char[img_width * img_height];
+    memcpy(img_buffer, data, img_width * img_height);
+}
+
+void apply_threshold(unsigned char tval) {
+    for(unsigned i = 0; i < img_width*img_height; i++) {
+        img_buffer[i] = *(img_buffer+i) < tval ? *(img_buffer+i):0xFF;
+    }
+}
+
+unsigned char* get_image_buffer() {
+    return img_buffer;
+}
+
+//meta
 const char * get_lib_version() {
-    return "imgproc 1.0";
+    return "imgproc 1.8";
 }
 
-unsigned char* apply_threshold(const unsigned char* img, unsigned width, unsigned height, unsigned char tval) {
-    static unsigned char* buffer;
-    if (buffer) {
-        delete [] buffer;
-    }
-    buffer = new unsigned char[width * height];
 
-    if (img) {
-        for(unsigned i = 0; i < width*height; i++) {
-            buffer[i] = *(img+i) < tval ? *(img+i):0xFF;
-        }
-        return buffer;
-    } else {
-        return 0;
-    }
-}
