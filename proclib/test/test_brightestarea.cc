@@ -1,9 +1,6 @@
 #include "imgproc.h"
 
-<<<<<<< HEAD
-=======
 #include "test_actions.h"
->>>>>>> [Test] brightest area finder testcase added
 #include "img_sample.h"
 
 int main(int argc, char** argv) {
@@ -15,7 +12,7 @@ int main(int argc, char** argv) {
         TEST_RESULT("Can't determine brightest area\n");
         return -1;
     }
-    if (area_index != 54) {
+    if (area_index != 56) {
         TEST_RESULT("We did not expect that.: %d vs %d\n", area_index, 54);
         return -1;
     }

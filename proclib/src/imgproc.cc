@@ -36,6 +36,13 @@ void apply_threshold(unsigned char tval) {
     }
 }
 
+unsigned get_slice_index(unsigned idx, unsigned ssize) {
+    unsigned cx, cy;
+    cx = idx % img_width;
+    cy = idx / img_width;
+    return cx/ssize + (cy/ssize)*(img_width/ssize);
+}
+
 int get_brightest_area(unsigned slice_size) {
     area_count = (img_width / slice_size) * (img_height / slice_size);
     area_weights = new int[area_count];
@@ -43,7 +50,7 @@ int get_brightest_area(unsigned slice_size) {
 
     //calculate slice values
     for(unsigned i = 0; i < img_width*img_height; i++) {
-        unsigned c_index = (i % img_width)/slice_size + (i/(img_width*slice_size))*slice_size;
+        unsigned c_index = get_slice_index(i, slice_size);
         area_weights[c_index] = *(img_buffer+i) + area_weights[c_index];
     }
 
