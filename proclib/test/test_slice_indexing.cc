@@ -4,11 +4,10 @@
 #include "img_sample.h"
 
 int main(int argc, char** argv) {
-    int size = 4;
-    unsigned idx = 0;
-    init_image(32, 32, img_sample);
+    ImageProcessor imp(32, 32, 4, img_sample);
+    int idx;
     for(int i = 0; i < 32*32; i++) {
-        idx = get_slice_index(i, size);
+        idx = imp.getSliceIndex(i);
     }
     if (idx == 63) {
         return 0;
