@@ -8,10 +8,26 @@ class proclib():
         self.get_lib_version.argtypes = None
         self.get_lib_version.restype = ctypes.c_char_p
 
-        #apply_threshold(char* img, unsigned width, unsigned height, unsigned char tval);
+        #void init_image(unsigned width, unsigned height, const unsigned char* data);
+        self.init_image = self.lib.init_image
+        self.init_image.argtypes = [ ctypes.c_uint, ctypes.c_uint, ctypes.c_char_p ]
+        self.init_image.restype = None
+
+        #void apply_threshold(unsigned char tval);
         self.apply_threshold = self.lib.apply_threshold
-        self.apply_threshold.argtypes = [ ctypes.POINTER(ctypes.c_ubyte), ctypes.c_uint, ctypes.c_uint, ctypes.c_ubyte ]
-        self.apply_threshold.restype = ctypes.c_void_p
+        self.apply_threshold.argtypes = [ ctypes.c_ubyte ]
+        self.apply_threshold.restype = None
+
+        #int get_brightest_area(void);
+        self.get_brightest_area = self.lib.get_brightest_area
+        self.get_brightest_area.argtypes = None
+        self.get_brightest_area.restype = ctypes.c_int
+
+        #const unsigned char* get_image_buffer(void);
+        self.get_image_buffer = self.lib.get_image_buffer
+        self.get_image_buffer.argtypes = None
+        self.apply_threshold.restype = ctypes.c_char_p
+
 
     def getVer(self):
         return self.get_lib_version()
@@ -23,11 +39,5 @@ class proclib():
         dataptr = self.apply_threshold(raw_data_ptr, width, height, tval)
         dataptr = ctypes.cast(dataptr, ctypes.POINTER(ctypes.c_ubyte))
         return [dataptr[i] for i in range(width*height)]
-        '''
-        print type(x)
-        print repr(x)
-        print len(x)
-        '''
-        
 
 

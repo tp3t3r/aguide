@@ -23,14 +23,16 @@ void apply_threshold(unsigned char tval) {
     }
 }
 
-int get_brightest_area() {
+int get_brightest_area(void) {
     if (imp) {
         return imp->getBrightestArea();
     }
+    return -1;
 }
 
-unsigned char* get_image_buffer(void) {
+const unsigned char* get_image_buffer(void) {
     if (imp) {
         return imp->getBuffer();
     }
+    return nullptr;
 }

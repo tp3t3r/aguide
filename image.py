@@ -44,7 +44,7 @@ class Capture:
         imggs.save(filename)
 
 class FrameProcessor:
-    def __init__(self, framedata, width, height):
+    def __init__(self, width, height, framedata):
         self.frame = framedata
         self.width = width
         self.height = height
@@ -53,9 +53,16 @@ class FrameProcessor:
         self.proclib = proclib()
 
     #wrapped from proclib
+    def getLibVersion(self):
+        self.proclib.getVer()
+
+    def initImage(self):
+        self.proclib.init_image(self.width, self.height, self.framedata)
+
+    #wrapped from proclib
     def applyThreshold(self, tval = 50):
-        self.frame = self.proclib.applyThreshold(self.frame, tval)
-        #self.frame = [ 255 if x > tval else x for x in self.frame ]
+        self.proclib.applyThreshold(tval)
+        self.frame = self.proclib.get_image_buffer()
 
     #wrapped from proclib
     def getLibVersion(self):
