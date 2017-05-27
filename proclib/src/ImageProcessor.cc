@@ -37,6 +37,10 @@ int ImageProcessor::getBrightestArea() {
     }
     return ret;
 }
+void ImageProcessor::getSpotCoordinates(int * x, int * y) {
+    *x = -1;
+    *y = -1;
+}
 
 unsigned ImageProcessor::getSliceIndex(unsigned idx) {
     unsigned cx, cy;

@@ -6,6 +6,7 @@ class ImageProcessor {
         ~ImageProcessor();
         void applyThreshold(unsigned char tvalue);
         int getBrightestArea(void);
+        void getSpotCoordinates(int * x, int * y);
         const unsigned char * getBuffer(void);
         unsigned getSliceIndex(unsigned idx);
 
