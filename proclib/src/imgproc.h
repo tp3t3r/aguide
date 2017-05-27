@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ImageProcessor.h"
-
+/*
 
 //A native C wrapper for Python
 extern "C" {
@@ -12,4 +12,4 @@ extern "C" {
     const unsigned char* get_image_buffer(void);
 }
 
-
+*/

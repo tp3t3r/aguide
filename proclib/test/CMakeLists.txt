@@ -7,7 +7,7 @@ file(GLOB testcases_src
 
 foreach(testcase ${testcases_src})
     #compile
-    get_filename_component(test_binary ${testcase} NAME)
+    get_filename_component(test_binary ${testcase} NAME_WE)
     add_executable(${test_binary}
         ${testcase}
         img_sample.h

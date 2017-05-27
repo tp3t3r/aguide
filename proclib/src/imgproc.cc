@@ -1,5 +1,5 @@
 #include "imgproc.h"
-
+/*
 //globals
 ImageProcessor * imp = nullptr;
 
@@ -36,3 +36,4 @@ const unsigned char* get_image_buffer(void) {
     }
     return nullptr;
 }
+*/
