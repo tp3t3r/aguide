@@ -5,11 +5,12 @@
 int test_thresholding() {
     const char input_data[] = { 10, 20, 30, 40, 200, 201, 202, 200, 200 };
     const char out_data[] =   { 10, 20, 30, 40, 255, 255, 255, 255, 255 };
-    ImageProcessor imp(3,3,1,input_data);
-    imp.applyThreshold(200);
-    const char* imgbuf = imp.getBuffer();
+
+    init_image(3,3,input_data);
+    apply_threshold(200);
+    const char* data = get_image_buffer();
     for(int i=0; i<9; i++) {
-        if (*(imgbuf+i) != out_data[i]) {
+        if (*(data+i) != out_data[i]) {
             TEST_RESULT("Thresholding failed");
             return -1;
         }

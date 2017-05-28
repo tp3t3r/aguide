@@ -1,5 +1,5 @@
 #include "imgproc.h"
-/*
+
 //globals
 ImageProcessor * imp = nullptr;
 
@@ -8,7 +8,7 @@ const char * get_lib_version() {
     return "imgproc 1.8";
 }
 
-void init_image(unsigned width, unsigned height, const unsigned char* data) {
+void init_image(int width, int height, const char* data) {
     if (imp) {
         delete imp;
         imp = nullptr;
@@ -17,23 +17,22 @@ void init_image(unsigned width, unsigned height, const unsigned char* data) {
     imp = new ImageProcessor(width, height, slice, data);
 }
 
-void apply_threshold(unsigned char tval) {
+void apply_threshold(char tval) {
     if (imp) {
         imp->applyThreshold(tval);
     }
 }
 
-int get_brightest_area(void) {
+void get_spot_coordinates(int *x, int *y) {
     if (imp) {
-        return imp->getBrightestArea();
+        imp->getSpotCoordinates(x, y);
     }
-    return -1;
 }
 
-const unsigned char* get_image_buffer(void) {
+const char* get_image_buffer(void) {
     if (imp) {
         return imp->getBuffer();
     }
     return nullptr;
 }
-*/
+

@@ -2,18 +2,18 @@
 
 class ImageProcessor {
     public:
-        ImageProcessor(unsigned width, unsigned height, unsigned slice_size, const unsigned char* data);
+        ImageProcessor(int width, int height, int slice_size, const char* data);
         ~ImageProcessor();
-        void applyThreshold(unsigned char tvalue);
-        void getBrightestSlice(int *x, int *y);
+        void applyThreshold(char tvalue);
+        void getBrightestSlice(int *x, int *y, int *b);
         void getSpotCoordinates(int * x, int * y);
-        const unsigned char * getBuffer(void);
+        const char* getBuffer(void);
 
     private:
-        unsigned char* _data;
-        unsigned _slice_size;
-        unsigned _slice_count;
-        unsigned _width, _height;
-        unsigned * _slice_weights;
+        char* _data;
+        int _slice_size;
+        //int _slice_count;
+        int _width, _height;
+        //int * _slice_weights;
 };
 
