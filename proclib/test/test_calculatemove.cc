@@ -14,7 +14,7 @@ int main(int argc, char** argv) {
     imp.getSpotCoordinates(&x2, &y2);
 
     int diffx = x2 - x;
-    int diffy = y2 -y; 
+    int diffy = y2 - y; 
 
     if (diffx != -8 && diffy != 5) {
         TEST_RESULT("move %d,%d -> %d,%d\n", x, y, x2, y2);

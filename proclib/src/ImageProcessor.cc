@@ -62,7 +62,7 @@ void ImageProcessor::getSpotCoordinates(int * x, int * y) {
 
     int x_area, y_area, brightness;
     getBrightestSlice(&x_area, &y_area, &brightness);
-    if ( x < 0 || y < 0) {
+    if ( x < 0 || y < 0 || brightness < 1) {
         return;
     }
     int iy,ix;

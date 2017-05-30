@@ -11,6 +11,8 @@ foreach(testcase ${testcases_src})
     add_executable(${test_binary}
         ${testcase}
         img_sample.h
+        TestFrame.h
+        TestFrame.cc
     )
     #link with production code
     target_link_libraries(${test_binary} ${libproc})
