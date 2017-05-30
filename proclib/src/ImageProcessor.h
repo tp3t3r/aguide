@@ -7,13 +7,14 @@ class ImageProcessor {
         void applyThreshold(char tvalue);
         void getBrightestSlice(int *x, int *y, int *b);
         void getSpotCoordinates(int * x, int * y);
+        void addFrame(const char *data);
         const char* getBuffer(void);
 
     private:
         char* _data;
         int _slice_size;
-        //int _slice_count;
+        int _slice_count;
         int _width, _height;
-        //int * _slice_weights;
+        int * _slice_weights;
 };
 

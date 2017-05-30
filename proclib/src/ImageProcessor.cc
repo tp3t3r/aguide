@@ -6,11 +6,17 @@ ImageProcessor::ImageProcessor(int width, int height, int slice_size, const char
     _width = width;
     _height = height;
     _slice_size = slice_size;
-    //_slice_count = _width / slice_size * _height / slice_size;
-    //_slice_weights = new int[_slice_count];
+    _slice_count = _width / _slice_size * _height / _slice_size;
+    _slice_weights = new int[_slice_count];
+ 
     _data = new char[_width * _height];
-    memcpy(_data, data, _width * _height);
+    addFrame(data);
+}
 
+void ImageProcessor::addFrame(const char* data) {
+    if (data) {
+        memcpy(_data, data,  _width * _height);
+    }
 }
 
 void ImageProcessor::applyThreshold(char tval) {
@@ -20,9 +26,7 @@ void ImageProcessor::applyThreshold(char tval) {
 }
 
 void ImageProcessor::getBrightestSlice(int *x_area, int *y_area, int *brightness) {
-    int slice_count = _width / _slice_size * _height / _slice_size;
-    int * slice_weights = new int[slice_count];
-    memset(slice_weights, 0, slice_count);
+    memset(_slice_weights, 0, _slice_count*sizeof(_slice_count));
     int iy, ix;
     //calculate areas
     for(iy = 0; iy<_height; iy++) {
@@ -30,7 +34,7 @@ void ImageProcessor::getBrightestSlice(int *x_area, int *y_area, int *brightness
             int area_index = ix/_slice_size + (iy/_slice_size)*(_width/_slice_size);
             int pixel = *(_data+ix+iy*_width);
             if (pixel > 0) {
-                slice_weights[area_index]++;
+                _slice_weights[area_index]++;
             }
         }
     }
@@ -39,18 +43,17 @@ void ImageProcessor::getBrightestSlice(int *x_area, int *y_area, int *brightness
     *y_area = -1;
     *brightness = -1;
     int brightest_idx = 0;
-    for(int i=0; i < slice_count; i++) {
-        if(slice_weights[i] > *brightness) {
-            *brightness = slice_weights[i];
+    for(int i=0; i < _slice_count; i++) {
+        if(_slice_weights[i] > *brightness) {
+            *brightness = _slice_weights[i];
             brightest_idx = i;
         }
-        //printf("sw[%d]: %d\n", i, slice_weights[i]);
+        //printf("sw[%d]: %d\n", i, _slice_weights[i]);
     }
     //transform index to 2D cooradinate
     *x_area = ( brightest_idx % (_width / _slice_size));
     *y_area = ( brightest_idx / (_width / _slice_size));
 
-    delete [] slice_weights;
 }
 
 void ImageProcessor::getSpotCoordinates(int * x, int * y) {
@@ -80,10 +83,6 @@ void ImageProcessor::getSpotCoordinates(int * x, int * y) {
         }
         //printf("\n");
     }
-    //printf("sumx: %d", sumx);
-    //printf("sumy: %d", sumy);
-    //printf("br:   %d", brightness);
-    //average
     *x = sumx/brightness;
     *y = sumy/brightness;
 }
@@ -94,7 +93,7 @@ const char* ImageProcessor::getBuffer(void) {
 
 ImageProcessor::~ImageProcessor() {
     delete [] _data;
-    //delete [] _slice_weights;
+    delete [] _slice_weights;
 }
 
 
