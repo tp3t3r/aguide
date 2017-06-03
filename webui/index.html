@@ -1,0 +1,19 @@
+<html>
+    <title>Autoguider</title>
+    <head>
+        <script type='text/javascript'>
+            function reloadImage() {
+                reloadImage.counter = 0;
+                var d = new Date();
+                document.getElementById('snapshot').src = 'image00.png?at=' + d.getTime();
+                document.getElementById('pd').innerHTML = this.counter
+            }
+            window.setInterval(reloadImage, 1500);
+        </script>
+    </head>
+    <body\n>
+        <h1>image:</h1>
+        <img id='snapshot' src='image00.png'></img>        
+        <h2 id='pd'></h2>
+    <body>
+</html>
