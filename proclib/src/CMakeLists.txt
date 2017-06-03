@@ -5,3 +5,5 @@ add_library(
     ImageProcessor.h
     ImageProcessor.cc
 )
+
+install(TARGETS ${libproc} DESTINATION /tmp)
