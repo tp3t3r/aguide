@@ -2,10 +2,17 @@
 from flask import Flask, render_template, Response
 import picamera
 from PIL import Image
-import sys,time
+
+import sys,time,signal
 import numpy
+import json
 
 app = Flask(__name__)
+
+#globals
+stats = {}
+stats['name'] = 'siriusguider 9000'
+state='running'
 
 @app.route('/')
 def index():
@@ -19,24 +26,25 @@ def frameFactory():
         camera.vflip = True
         camera.hflip = True
         camera.led = False
-        camera.framerate = 1
+        camera.framerate = .1
         camera.awb_mode = 'sunlight'
         camera.exposure_mode = 'off'
         camera.color_effects = (128,128)
-        camera.shutter_speed = 900000
+        camera.shutter_speed = 500000
         camera.ISO=800
         camera.meter_mode = 'average'
         print "getting ready..."
-        time.sleep(3)
+        time.sleep(5)
+        camera.exposure_mode = 'off'
         print "go!"
 
-        frames = 0
+        stats['frames'] = 0
         now = time.time()
 
         framedata = numpy.empty((320 * 240 * 3,), dtype=numpy.uint8)
-        fps = 0.0
+        stats['fps'] = 0.0
 
-        while True:
+        while True and state == 'running':
             '''
             #new way
             camera.capture(framedata, use_video_port=True, format='rgb')
@@ -59,8 +67,8 @@ def frameFactory():
 
             #luminance data for processing
             l_img = im.convert('L')
-            frames += 1
-            fps = float(frames) / (time.time() - now)
+            stats['frames'] += 1
+            stats['fps'] = "%.2f" % (float(stats['frames']) / (time.time() - now))
     
             #frame contains jpeg
             yield (b'--frame\r\n' 
@@ -71,6 +79,23 @@ def video_feed():
     return Response(frameFactory(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@app.route('/stats.json')
+def proc_stats_data():
+    data = json.dumps(stats)
+    #print data
+    return(data)
+
+@app.route('/stats.js')
+def proc_stats_reader():
+    return app.send_static_file('stats.js')
+
+
+def shutdown(signal, frame):
+    print "shutting down..."
+    state='not running anymore'
+
+signal.signal(signal.SIGINT, shutdown)
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=False)
+    app.run(host='0.0.0.0', threaded=True, debug=False)
 

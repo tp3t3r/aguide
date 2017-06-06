@@ -1,9 +1,12 @@
 <html>
   <head>
     <title>Siriusguider 9000</title>
+    <script type='text/javascript' src="stats.js" async></script>
   </head>
   <body>
-    <div>evf:</div>
-    <div><img src="{{ url_for('video_feed') }}"></div>
+    <div class='title'>evf:</div>
+    <div class='evf'><img src="{{ url_for('video_feed') }}"></div>
+    <div id='stats' class='stats'></div>
+    <div class='buttons'></div>
   </body>
 </html>
