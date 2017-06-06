@@ -1,0 +1,17 @@
+<html>
+    <title>Autoguider</title>
+    <head>
+        <script type='text/javascript'>
+            function reloadImage() {
+                reloadImage.counter = 0;
+                var d = new Date();
+                document.getElementById('evf').src = 'evf.png?at=' + d.getTime();
+            }
+            window.setInterval(reloadImage, 3000);
+        </script>
+    </head>
+    <body\n>
+        <h1>image:</h1>
+        <img id='evf' src='evf.png'></img>        
+    <body>
+</html>
