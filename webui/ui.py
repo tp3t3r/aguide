@@ -6,8 +6,32 @@ from PIL import Image, ImageDraw
 import sys,time,signal
 import numpy
 import json
+import ctypes
 
 app = Flask(__name__)
+
+#c wrapper
+#processing
+lproc = ctypes.CDLL('/tmp/libimgproc.so')
+initImage = lproc.init_image
+                       # width        #height        #pointer
+initImage.argtypes = [ ctypes.c_uint, ctypes.c_uint, ctypes.c_void_p ]
+initImage.restype = None
+
+#void apply_threshold(unsigned char tval);
+applyThreshold = lproc.apply_threshold
+applyThreshold.argtypes = [ ctypes.c_ubyte ]
+applyThreshold.restype = None
+
+#void get_spot_coordinates(int *x, int *y);
+getSpotCoordinates = lproc.get_spot_coordinates
+getSpotCoordinates.argtypes = [ ctypes.c_void_p, ctypes.c_void_p ]
+getSpotCoordinates.restype = None
+
+getBuffer = lproc.get_image_buffer
+getBuffer.argtypes = None
+getBuffer.restype = ctypes.c_char_p
+
 
 #globals
 stats = {}
@@ -21,16 +45,15 @@ def index():
 
 def frameFactory():
     with picamera.PiCamera() as camera:
-        #camera.resolution=(640,480)
         camera.resolution=(320,240)
-        camera.zoom = (0.25,0.25,0.5,0.5)
+        #camera.zoom = (0.25,0.25,0.5,0.5)
         camera.vflip = True
         camera.hflip = True
         camera.led = False
-        camera.framerate = 1
+        camera.framerate = 2
         camera.awb_mode = 'sunlight'
         camera.color_effects = (128,128)
-        camera.shutter_speed = 500000
+        camera.shutter_speed = 400000
         camera.ISO=800
         camera.meter_mode = 'average'
         print "getting ready..."
@@ -43,6 +66,8 @@ def frameFactory():
 
         framedata = numpy.empty((320 * 240 * 3,), dtype=numpy.uint8)
         stats['fps'] = 0.0
+
+   
 
         while True and state == 'running':
             '''
@@ -62,19 +87,36 @@ def frameFactory():
 
             #jpeg for live view
             jpg = im.convert('RGB')
-            #overlay - rectangle
-            #jpg_overlay = ImageDraw.Draw(jpg)
-            #jpg_overlay.rectangle(((30,30),(45,45)), None, outline = "green")
-            jpg.save('evf.jpg', quality=85)
-            frame = open('evf.jpg').read()
 
             #luminance data for processing
             l_img = im.convert('L')
+            imgdata = list(l_img.getdata())
+            print 'orig:', len(imgdata), imgdata[0:15]
+            initImage(320,240, ( ctypes.c_byte * len(imgdata) )(*imgdata))
+            applyThreshold(200)
+
+            x = ctypes.c_int()
+            y = ctypes.c_int()
+            getSpotCoordinates(ctypes.byref(x), ctypes.byref(y))
+
+            #imgbuffer = getBuffer()
+            #imgbuffer = ctypes.cast(imgbuffer,  ctypes.POINTER(ctypes.c_ubyte))
+            #print 'lib: ', len(imgbuffer), imgbuffer[0:15]
+            #print "spot: ", x.value, ":", y.value
+
+            #add overlay
+            jpg = im.convert('RGB')
+            jpg_overlay = ImageDraw.Draw(jpg)
+            jpg_overlay.rectangle(((x.value - 5,y.value - 5 ),(x.value + 5,y.value +5)), None, outline = "green")
+            jpg.save('evf.jpg', quality=90)
+
+            #processing stats
             stats['frames'] += 1
             stats['fps'] = "%.2f" % (float(stats['frames']) / (time.time() - now))
-            print stats
+            #print stats
     
-            #frame contains jpeg
+            #jpeg for live view
+            frame = open('evf.jpg').read()
             yield (b'--frame\r\n' 
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 

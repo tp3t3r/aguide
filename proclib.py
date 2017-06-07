@@ -1,7 +1,7 @@
 import ctypes
 
 class proclib():
-    def __init__(self, so = "/home/pi/autoguider/proclib/build/src/libimgproc.so"):
+    def __init__(self, so = "/tmp/libimgproc.so"):
         self.lib = ctypes.CDLL(so)
 
         self.get_lib_version = self.lib.get_lib_version
