@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from flask import Flask, render_template, Response
 import picamera
-from PIL import Image
+from PIL import Image, ImageDraw
 
 import sys,time,signal
 import numpy
@@ -12,6 +12,7 @@ app = Flask(__name__)
 #globals
 stats = {}
 stats['name'] = 'siriusguider 9000'
+
 state='running'
 
 @app.route('/')
@@ -22,13 +23,12 @@ def frameFactory():
     with picamera.PiCamera() as camera:
         #camera.resolution=(640,480)
         camera.resolution=(320,240)
-        #camera.zoom = (0.25,0.25,0.5,0.5)
+        camera.zoom = (0.25,0.25,0.5,0.5)
         camera.vflip = True
         camera.hflip = True
         camera.led = False
-        camera.framerate = .1
+        camera.framerate = 1
         camera.awb_mode = 'sunlight'
-        camera.exposure_mode = 'off'
         camera.color_effects = (128,128)
         camera.shutter_speed = 500000
         camera.ISO=800
@@ -62,13 +62,17 @@ def frameFactory():
 
             #jpeg for live view
             jpg = im.convert('RGB')
-            jpg.save('evf.jpg')
+            #overlay - rectangle
+            #jpg_overlay = ImageDraw.Draw(jpg)
+            #jpg_overlay.rectangle(((30,30),(45,45)), None, outline = "green")
+            jpg.save('evf.jpg', quality=85)
             frame = open('evf.jpg').read()
 
             #luminance data for processing
             l_img = im.convert('L')
             stats['frames'] += 1
             stats['fps'] = "%.2f" % (float(stats['frames']) / (time.time() - now))
+            print stats
     
             #frame contains jpeg
             yield (b'--frame\r\n' 
@@ -89,13 +93,6 @@ def proc_stats_data():
 def proc_stats_reader():
     return app.send_static_file('stats.js')
 
-
-def shutdown(signal, frame):
-    print "shutting down..."
-    state='not running anymore'
-
-signal.signal(signal.SIGINT, shutdown)
-
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', threaded=True, debug=False)
+    app.run(host='0.0.0.0', threaded=False, debug=False)
 
