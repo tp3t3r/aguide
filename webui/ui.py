@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request
 import picamera
 from PIL import Image, ImageDraw
 
@@ -12,15 +12,19 @@ app = Flask(__name__)
 
 #c wrapper
 #processing
+
 lproc = ctypes.CDLL('/tmp/libimgproc.so')
 initImage = lproc.init_image
                        # width        #height        #pointer
-initImage.argtypes = [ ctypes.c_uint, ctypes.c_uint, ctypes.c_void_p ]
+#imagebuffer pointer
+imgbuflen = 320 * 240
+bufptr = ctypes.POINTER(ctypes.c_byte * imgbuflen)
+initImage.argtypes = [ ctypes.c_uint, ctypes.c_uint, bufptr ]
 initImage.restype = None
 
 #void apply_threshold(unsigned char tval);
 applyThreshold = lproc.apply_threshold
-applyThreshold.argtypes = [ ctypes.c_ubyte ]
+applyThreshold.argtypes = [ ctypes.c_byte ]
 applyThreshold.restype = None
 
 #void get_spot_coordinates(int *x, int *y);
@@ -30,7 +34,11 @@ getSpotCoordinates.restype = None
 
 getBuffer = lproc.get_image_buffer
 getBuffer.argtypes = None
-getBuffer.restype = ctypes.c_char_p
+getBuffer.restype = bufptr
+
+getVersion = lproc.get_lib_version
+getVersion.argtypes = None
+getVersion.restype = ctypes.c_char_p
 
 
 #globals
@@ -42,6 +50,14 @@ state='running'
 @app.route('/')
 def index():
     return render_template('ui.html')
+
+@app.route('/shutdown', methods=['POST'])
+def shutdown(signal, frame):
+    print "shutting down..."
+    state='not running'
+
+#signal handlers
+signal.signal(signal.SIGINT, shutdown) 
 
 def frameFactory():
     with picamera.PiCamera() as camera:
@@ -67,8 +83,6 @@ def frameFactory():
         framedata = numpy.empty((320 * 240 * 3,), dtype=numpy.uint8)
         stats['fps'] = 0.0
 
-   
-
         while True and state == 'running':
             '''
             #new way
@@ -87,22 +101,23 @@ def frameFactory():
 
             #jpeg for live view
             jpg = im.convert('RGB')
-
             #luminance data for processing
             l_img = im.convert('L')
             imgdata = list(l_img.getdata())
             print 'orig:', len(imgdata), imgdata[0:15]
-            initImage(320,240, ( ctypes.c_byte * len(imgdata) )(*imgdata))
-            applyThreshold(200)
+            
 
+            print "x", type(bufptr)
+            print "z", type (ctypes.c_byte * len(imgdata))
+            initImage(320,240, (ctypes.c_byte * len(imgdata))(*imgdata) )
+            #applyThreshold(200)
+            print getVersion()
+            imgbuf = getBuffer().contents
+            print 'lib: ', len(imgbuf), imgbuf[0:15]
             x = ctypes.c_int()
             y = ctypes.c_int()
             getSpotCoordinates(ctypes.byref(x), ctypes.byref(y))
-
-            #imgbuffer = getBuffer()
-            #imgbuffer = ctypes.cast(imgbuffer,  ctypes.POINTER(ctypes.c_ubyte))
-            #print 'lib: ', len(imgbuffer), imgbuffer[0:15]
-            #print "spot: ", x.value, ":", y.value
+            print "spot: ", x.value, ":", y.value
 
             #add overlay
             jpg = im.convert('RGB')
