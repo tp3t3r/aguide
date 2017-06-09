@@ -7,6 +7,7 @@ ImageProcessor::ImageProcessor(int width, int height, int slice_size, const char
     _height = height;
     _slice_size = slice_size;
     _slice_count = _width / _slice_size * _height / _slice_size;
+    _threshold = 85; //default
     _slice_weights = new int[_slice_count];
  
     _data = new char[_width * _height];
@@ -19,25 +20,29 @@ void ImageProcessor::addFrame(const char* data) {
     }
 }
 
-void ImageProcessor::applyThreshold(char tval) {
-    for(int i = 0; i < _width*_height; i++) {
-        _data[i] = *(_data+i) < tval ? *(_data+i):0xFF;
-    }
+void ImageProcessor::setThreshold(int th) {
+    _threshold = th;
 }
 
 void ImageProcessor::getBrightestSlice(int *x_area, int *y_area, int *brightness) {
     memset(_slice_weights, 0, _slice_count*sizeof(_slice_count));
     int iy, ix;
-    //calculate areas
+    //calculate area
+    int maxpix = 0;
     for(iy = 0; iy<_height; iy++) {
         for(ix = 0; ix<_width; ix++) {
             int area_index = ix/_slice_size + (iy/_slice_size)*(_width/_slice_size);
             int pixel = *(_data+ix+iy*_width);
-            if (pixel > 0) {
+            if (pixel > maxpix) {
+                maxpix = pixel;
+            }
+            if (pixel > _threshold) {
                 _slice_weights[area_index]++;
             }
         }
     }
+    //printf("max value: %d\n", maxpix);
+
     //finding max
     *x_area = -1;
     *y_area = -1;
@@ -63,6 +68,7 @@ void ImageProcessor::getSpotCoordinates(int * x, int * y) {
     int x_area, y_area, brightness;
     getBrightestSlice(&x_area, &y_area, &brightness);
     if ( x < 0 || y < 0 || brightness < 1) {
+        //printf("not bright spot");
         return;
     }
     int iy,ix;
@@ -75,14 +81,15 @@ void ImageProcessor::getSpotCoordinates(int * x, int * y) {
     for(iy=y_offset; iy < y_offset + _slice_size; iy++) {
         for(ix=x_offset; ix < x_offset + _slice_size; ix++) {
             int pixel = *(_data+ix+iy*_width);
-            //printf("%02x ", pixel);
-            if(pixel > 0) {
+            printf("%03d ", pixel);
+            if(pixel > _threshold) {
                 sumx += ix;
                 sumy += iy;
             }
         }
-        //printf("\n");
+        printf("\n");
     }
+    printf("spot: %d:%d [%d]\n", sumx/brightness, sumy/brightness, brightness);
     *x = sumx/brightness;
     *y = sumy/brightness;
 }
@@ -95,5 +102,3 @@ ImageProcessor::~ImageProcessor() {
     delete [] _data;
     delete [] _slice_weights;
 }
-
-

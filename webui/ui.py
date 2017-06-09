@@ -3,7 +3,7 @@ from flask import Flask, render_template, Response, request
 import picamera
 from PIL import Image, ImageDraw
 
-import sys,time,signal
+import sys,time
 import numpy
 import json
 import ctypes
@@ -18,14 +18,9 @@ initImage = lproc.init_image
                        # width        #height        #pointer
 #imagebuffer pointer
 imgbuflen = 320 * 240
-bufptr = ctypes.POINTER(ctypes.c_byte * imgbuflen)
+bufptr = ctypes.POINTER(ctypes.c_ubyte * imgbuflen)
 initImage.argtypes = [ ctypes.c_uint, ctypes.c_uint, bufptr ]
 initImage.restype = None
-
-#void apply_threshold(unsigned char tval);
-applyThreshold = lproc.apply_threshold
-applyThreshold.argtypes = [ ctypes.c_byte ]
-applyThreshold.restype = None
 
 #void get_spot_coordinates(int *x, int *y);
 getSpotCoordinates = lproc.get_spot_coordinates
@@ -35,11 +30,6 @@ getSpotCoordinates.restype = None
 getBuffer = lproc.get_image_buffer
 getBuffer.argtypes = None
 getBuffer.restype = bufptr
-
-getVersion = lproc.get_lib_version
-getVersion.argtypes = None
-getVersion.restype = ctypes.c_char_p
-
 
 #globals
 stats = {}
@@ -52,12 +42,9 @@ def index():
     return render_template('ui.html')
 
 @app.route('/shutdown', methods=['POST'])
-def shutdown(signal, frame):
+def shutdown():
     print "shutting down..."
     state='not running'
-
-#signal handlers
-signal.signal(signal.SIGINT, shutdown) 
 
 def frameFactory():
     with picamera.PiCamera() as camera:
@@ -104,16 +91,10 @@ def frameFactory():
             #luminance data for processing
             l_img = im.convert('L')
             imgdata = list(l_img.getdata())
-            print 'orig:', len(imgdata), imgdata[0:15]
-            
 
-            print "x", type(bufptr)
-            print "z", type (ctypes.c_byte * len(imgdata))
-            initImage(320,240, (ctypes.c_byte * len(imgdata))(*imgdata) )
-            #applyThreshold(200)
-            print getVersion()
-            imgbuf = getBuffer().contents
-            print 'lib: ', len(imgbuf), imgbuf[0:15]
+            initImage(320,240, (ctypes.c_ubyte * len(imgdata))(*imgdata) )
+            #imgbuf = getBuffer().contents
+
             x = ctypes.c_int()
             y = ctypes.c_int()
             getSpotCoordinates(ctypes.byref(x), ctypes.byref(y))

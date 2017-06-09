@@ -17,15 +17,15 @@ void init_image(int width, int height, const char* data) {
     imp = new ImageProcessor(width, height, slice, data);
 }
 
-void apply_threshold(char tval) {
-    if (imp) {
-        imp->applyThreshold(tval);
-    }
-}
-
 void get_spot_coordinates(int *x, int *y) {
     if (imp) {
         imp->getSpotCoordinates(x, y);
+    }
+}
+
+void set_threshold(int th) {
+    if (imp) {
+        imp->setThreshold(th);
     }
 }
 

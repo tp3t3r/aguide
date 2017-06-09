@@ -4,9 +4,9 @@ class ImageProcessor {
     public:
         ImageProcessor(int width, int height, int slice_size, const char* data);
         ~ImageProcessor();
-        void applyThreshold(char tvalue);
         void getBrightestSlice(int *x, int *y, int *b);
         void getSpotCoordinates(int * x, int * y);
+        void setThreshold(int th);
         void addFrame(const char *data);
         const char* getBuffer(void);
 
@@ -15,6 +15,7 @@ class ImageProcessor {
         int _slice_size;
         int _slice_count;
         int _width, _height;
+        int _threshold;
         int * _slice_weights;
 };
 
