@@ -90,6 +90,14 @@ void TestFrame::shiftFrame(int xoffset, int yoffset) {
     }
 }
 
+void TestFrame::addLargerSpot(int x, int y) {
+    int size = 5;
+    int linesize = _width;
+    for(int i=0; i < size; i++) {
+        memset(_data+(y+i)*linesize+x, 0xFF, size);
+    }
+}
+
 const char * TestFrame::getFrame(void) {
     return const_cast<const char*>(_data);
 }
