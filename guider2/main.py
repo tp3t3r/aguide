@@ -14,6 +14,7 @@ def shutdown(signal, frame):
     print "Shutting down..."
     global Running
     Running = False;
+    server.shutdown()
 
 signal.signal(signal.SIGINT, shutdown)
 signal.signal(signal.SIGTERM, shutdown)
@@ -22,6 +23,8 @@ signal.signal(signal.SIGTERM, shutdown)
 lock = threading.RLock()
 spotx = -1
 spoty = -1
+Running = True
+server = None
 
 def imageProcessor():
     from framefactory import FrameFactory
@@ -44,6 +47,16 @@ def imageProcessor():
 def startUI():
     from SimpleHTTPServer import SimpleHTTPRequestHandler
     from BaseHTTPServer import HTTPServer
+    '''
+    class CustomHTTPServer(HTTPServer):
+        def __init__(self, *args, **kwargs):
+            super(type(self),self).__init__(*args, **kwargs)
+
+        def serve_forever(self):
+            while Running:
+                self.handle_request()
+    '''
+    global server
     server = HTTPServer(('', 8000), SimpleHTTPRequestHandler)
     server.serve_forever()
 

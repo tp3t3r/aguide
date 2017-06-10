@@ -7,7 +7,7 @@ class FrameProcessor():
         self.outputfile = outputfile
         self.img = Image.open(inputfile)
         self.proclib = pyproclib.Proclib()
-        self.threshold = 220
+        self.threshold = 50
 
     def lockSpot(value):
         if value:
@@ -22,7 +22,7 @@ class FrameProcessor():
         color = "green"
 
         jpg = self.img.convert('RGB')
-        jpg = ImageOps.invert(jpg)
+        #jpg = ImageOps.invert(jpg)
         jpg_overlay = ImageDraw.Draw(jpg)
         if (x != -1 and y != -1):
             jpg_overlay.rectangle( ((x-size, y-size), (x+size,y+size)), None, outline = color)

@@ -1,17 +1,18 @@
 <html>
-    <title>Autoguider</title>
+    <title>SZIRIUSZGUIDER 9000</title>
     <head>
+        <link rel='stylesheet' href='style.css'>
         <script type='text/javascript'>
             function reloadImage() {
                 reloadImage.counter = 0;
                 var d = new Date();
                 document.getElementById('evf').src = 'evf.jpg?at=' + d.getTime();
             }
-            window.setInterval(reloadImage, 1500);
+            window.setInterval(reloadImage, 800);
         </script>
     </head>
     <body>
-        <h1>image:</h1>
+        <div class='title'>guide camera:</div>
         <img width='640' height='480' id='evf' src='evf.jpg'></img>
     </body>
 </html>

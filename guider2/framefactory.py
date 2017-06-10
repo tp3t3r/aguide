@@ -17,35 +17,11 @@ class FrameFactory():
         self.camera.shutter_speed = 500000
         self.camera.ISO=800
         self.camera.meter_mode = 'average'
+        print 'Setting up camera...'
         time.sleep(7)
+        print 'OK\n'
         self.camera.exposure_mode = 'off'
-
-        #self.imgproc = pyproclib.Proclib()
         self.framedata = numpy.empty((320 * 240 * 3,), dtype=numpy.uint8)
 
     def capture(self, pngfile):
         self.camera.capture(pngfile, use_video_port=True, format='png')
-    '''
-    def frameFactory():
-        imgproc = pyproclib.Proclib()
-
-        while True:
-            camera.capture('evf.png', use_video_port=True, format='png')
-            im = Image.open('evf.png')
-
-            #luminance data for processing
-            imgdata = list(im.convert('L').getdata())
-
-            imgproc.initImage(imgdata)
-            #imgproc.setThreshold(40)
-
-            x,y = imgproc.getSpotCoordinates()
-
-            #add overlay
-            jpg = im.convert('RGB')
-            jpg_overlay = ImageDraw.Draw(jpg)
-            if (x != -1 and y != -1):
-                jpg_overlay.rectangle( ((x-5, y-5), (x+5,y+5)), None, outline = "green")
-
-            jpg.save('evf.jpg', quality=99)
-    '''
