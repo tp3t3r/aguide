@@ -81,15 +81,15 @@ void ImageProcessor::getSpotCoordinates(int * x, int * y) {
     for(iy=y_offset; iy < y_offset + _slice_size; iy++) {
         for(ix=x_offset; ix < x_offset + _slice_size; ix++) {
             int pixel = *(_data+ix+iy*_width);
-            printf("%03d ", pixel);
+            //printf("%03d ", pixel);
             if(pixel > _threshold) {
                 sumx += ix;
                 sumy += iy;
             }
         }
-        printf("\n");
+        //printf("\n");
     }
-    printf("spot: %d:%d [%d]\n", sumx/brightness, sumy/brightness, brightness);
+    //printf("spot: %d:%d [%d]\n", sumx/brightness, sumy/brightness, brightness);
     *x = sumx/brightness;
     *y = sumy/brightness;
 }

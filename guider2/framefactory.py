@@ -23,11 +23,8 @@ class FrameFactory():
         #self.imgproc = pyproclib.Proclib()
         self.framedata = numpy.empty((320 * 240 * 3,), dtype=numpy.uint8)
 
-    def __exit__(self, exc_type, exc_value, traceback):
-        return True
-
     def capture(self, pngfile):
-        camera.capture(pngfile, use_video_port=True, format='png')
+        self.camera.capture(pngfile, use_video_port=True, format='png')
     '''
     def frameFactory():
         imgproc = pyproclib.Proclib()

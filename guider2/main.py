@@ -5,6 +5,7 @@ import time
 import signal
 import sys
 
+
 #redirect
 sys.stderr = sys.stdout
 
@@ -17,19 +18,34 @@ def shutdown(signal, frame):
 signal.signal(signal.SIGINT, shutdown)
 signal.signal(signal.SIGTERM, shutdown)
 
+#globals
+lock = threading.RLock()
+spotx = -1
+spoty = -1
+
 def imageProcessor():
     from framefactory import FrameFactory
-    with FrameFactory() as cam:
-        while Running:
-            print "capturing @", time.time()
-            cam.capture('/tmp/evf.png')
+    from frameprocessor import FrameProcessor
+
+    infile = 'evf.png'
+    evffile = 'evf.jpg'
+
+    cam = FrameFactory()
+    while Running:
+        print "capturing @", time.time()
+        cam.capture(infile)
+        proc = FrameProcessor(infile, evffile)
+        x,y = proc.getSpotCoordinates()
+        with lock:
+            spotx = x
+            spoty = y
         
 
 def uiHandler():
         while Running:
             print "webserver"
             time.sleep(5)
-
+    
 if __name__ == "__main__":            
     thread_ui = threading.Thread(target=uiHandler)
     thread_ch = threading.Thread(target=imageProcessor)
@@ -41,5 +57,7 @@ if __name__ == "__main__":
         print "main thread"
         time.sleep(2)
 
+    #exiting
     thread_ui.join()
     thread_ch.join()
+
