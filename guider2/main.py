@@ -32,7 +32,7 @@ def imageProcessor():
 
     cam = FrameFactory()
     while Running:
-        print "capturing @", time.time()
+        #print "capturing @", time.time()
         cam.capture(infile)
         proc = FrameProcessor(infile, evffile)
         x,y = proc.getSpotCoordinates()
@@ -41,13 +41,14 @@ def imageProcessor():
             spoty = y
         
 
-def uiHandler():
-        while Running:
-            print "webserver"
-            time.sleep(5)
-    
+def startUI():
+    from SimpleHTTPServer import SimpleHTTPRequestHandler
+    from BaseHTTPServer import HTTPServer
+    server = HTTPServer(('', 8000), SimpleHTTPRequestHandler)
+    server.serve_forever()
+
 if __name__ == "__main__":            
-    thread_ui = threading.Thread(target=uiHandler)
+    thread_ui = threading.Thread(target=startUI)
     thread_ch = threading.Thread(target=imageProcessor)
 
     thread_ui.start()
