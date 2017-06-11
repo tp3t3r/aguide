@@ -43,21 +43,18 @@ def imageProcessor():
             spotx = x
             spoty = y
         
-
 def startUI():
     from SimpleHTTPServer import SimpleHTTPRequestHandler
-    from BaseHTTPServer import HTTPServer
-    '''
-    class CustomHTTPServer(HTTPServer):
-        def __init__(self, *args, **kwargs):
-            super(type(self),self).__init__(*args, **kwargs)
+    from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 
-        def serve_forever(self):
-            while Running:
-                self.handle_request()
-    '''
+    class extendedHandler(SimpleHTTPRequestHandler):
+       def do_POST(self):
+            print "handle posting"
+            self.do_GET()
+            return 
+
     global server
-    server = HTTPServer(('', 8000), SimpleHTTPRequestHandler)
+    server = HTTPServer(('', 8000), extendedHandler)
     server.serve_forever()
 
 if __name__ == "__main__":            
@@ -65,8 +62,7 @@ if __name__ == "__main__":
     thread_ch = threading.Thread(target=imageProcessor)
 
     thread_ui.start()
-    thread_ch.start()
-
+    thread_ch.start()    
     while Running:
         print "main thread"
         time.sleep(2)

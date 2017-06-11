@@ -8,14 +8,10 @@ class FrameProcessor():
         self.img = Image.open(inputfile)
         self.proclib = pyproclib.Proclib()
         self.threshold = 50
+        self.locked = False
 
     def lockSpot(value):
-        if value:
-            #lock
-            pass
-        else:
-            #unlock
-            pass
+        self.locked = not self.locked
 
     def addRectangle(self, x, y):
         size = 5
@@ -26,6 +22,10 @@ class FrameProcessor():
         jpg_overlay = ImageDraw.Draw(jpg)
         if (x != -1 and y != -1):
             jpg_overlay.rectangle( ((x-size, y-size), (x+size,y+size)), None, outline = color)
+            if self.locked:
+                jpg_overlay.text((0, 0),"[locked]",(255,0,0))
+            else:
+                jpg_overlay.text((0, 0),"[freerun]",(0,255,0))
         jpg.save(self.outputfile, quality=99)
 
 
