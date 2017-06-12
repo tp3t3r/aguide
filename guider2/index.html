@@ -8,15 +8,16 @@
                 var d = new Date();
                 document.getElementById('evf').src = 'evf.jpg?at=' + d.getTime();
             }
-            window.setInterval(reloadImage, 800);
+            window.setInterval(reloadImage, 1500);
         </script>
     </head>
     <body>
-        <div class='title'>guide camera:</div>
+        <!--div class='title'>guide camera:</div-->
         <img width='640' height='480' id='evf' src='evf.jpg'></img>
         <div class='button-container'>
-            <form action='index.html' method='post'>
-                <input type='submit' value='value' name='namefield'>
+            <form action='index.html' method='get'>
+                <input type='submit' value='zoombutton' name='zoom_in'>
+                <input type='submit' value='zoombutton' name='zoom_out'>
             </form>
         </div>
     </body>

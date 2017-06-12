@@ -42,15 +42,33 @@ def imageProcessor():
         with lock:
             spotx = x
             spoty = y
-        
+
 def startUI():
     from SimpleHTTPServer import SimpleHTTPRequestHandler
     from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 
     class extendedHandler(SimpleHTTPRequestHandler):
-       def do_POST(self):
+        def __init__(self, *args):
+            SimpleHTTPRequestHandler.__init__(self, *args)
+
+        def do_GET(self):
+            from urlparse import urlparse,parse_qs
+            values = parse_qs(urlparse(self.path).query)
+            print type(values), values
+            
+            SimpleHTTPRequestHandler.do_GET(self)
+        def do_POST(self):
+            import cgi
             print "handle posting"
-            self.do_GET()
+            postvars = None
+            ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
+            if ctype == 'multipart/form-data':
+                postvars = cgi.parse_multipart(self.rfile, pdict)
+                print 'multi', postvars
+            elif ctype == 'application/x-www-form-urlencoded':
+                length = int(self.headers.getheader('content-length'))
+                postvars = cgi.parse_qs(self.rfile.read(length), keep_blank_values=1)
+            #self.do_GET()
             return 
 
     global server
