@@ -1,6 +1,6 @@
 import pyproclib
 
-from PIL import Image,ImageDraw,ImageOps    
+from PIL import Image,ImageDraw,ImageOps,ImageFont  
 
 class FrameProcessor():
     def __init__(self, inputfile, outputfile, threshold=170):
@@ -10,8 +10,8 @@ class FrameProcessor():
         self.threshold = 50
         self.locked = False
 
-    def lockSpot(value):
-        self.locked = not self.locked
+    def lockSpot(self, value):
+        self.locked = value
 
     def addRectangle(self, x, y):
         size = 5
@@ -20,12 +20,13 @@ class FrameProcessor():
         jpg = self.img.convert('RGB')
         #jpg = ImageOps.invert(jpg)
         jpg_overlay = ImageDraw.Draw(jpg)
+        #font = ImageFont.truetype('/home/pi/.font/Pixeland.ttf', 28)
         if (x != -1 and y != -1):
             jpg_overlay.rectangle( ((x-size, y-size), (x+size,y+size)), None, outline = color)
-            if self.locked:
-                jpg_overlay.text((0, 0),"[locked]",(255,0,0))
-            else:
-                jpg_overlay.text((0, 0),"[freerun]",(0,255,0))
+            #if self.locked:
+            #    jpg_overlay.text((0, 0),"[locked]",(255,0,0),font=font)
+            #else:
+            #    jpg_overlay.text((0, 0),"[freerun]",(0,255,0),font=font)
         jpg.save(self.outputfile, quality=99)
 
 

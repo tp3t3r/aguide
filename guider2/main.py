@@ -5,7 +5,6 @@ import time
 import signal
 import sys
 
-
 #redirect
 sys.stderr = sys.stdout
 
@@ -26,6 +25,12 @@ spoty = -1
 Running = True
 server = None
 
+status = {
+    'camready' : False,
+    'islocked' : False,
+    'running' : False,
+}
+
 def imageProcessor():
     from framefactory import FrameFactory
     from frameprocessor import FrameProcessor
@@ -33,44 +38,64 @@ def imageProcessor():
     infile = 'evf.png'
     evffile = 'evf.jpg'
 
+    global status,lock
+
     cam = FrameFactory()
+    status['camready'] = True
     while Running:
         #print "capturing @", time.time()
         cam.capture(infile)
         proc = FrameProcessor(infile, evffile)
+        proc.lockSpot(status['islocked'])
+
         x,y = proc.getSpotCoordinates()
         with lock:
             spotx = x
             spoty = y
 
+def processButtons(values):
+    global status,lock
+    if 'lock' in values:
+        with lock:
+            status['islocked'] = not status['islocked']
+    if 'start/stop' in values:
+        with lock:
+            status['running'] = not status['running']
+    print status
+
 def startUI():
     from SimpleHTTPServer import SimpleHTTPRequestHandler
     from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
+
+    from indexpage import IndexPage
 
     class extendedHandler(SimpleHTTPRequestHandler):
         def __init__(self, *args):
             SimpleHTTPRequestHandler.__init__(self, *args)
 
+        def log_message(self, format, *args):
+            pass
+
         def do_GET(self):
             from urlparse import urlparse,parse_qs
             values = parse_qs(urlparse(self.path).query)
-            print type(values), values
-            
-            SimpleHTTPRequestHandler.do_GET(self)
-        def do_POST(self):
-            import cgi
-            print "handle posting"
-            postvars = None
-            ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
-            if ctype == 'multipart/form-data':
-                postvars = cgi.parse_multipart(self.rfile, pdict)
-                print 'multi', postvars
-            elif ctype == 'application/x-www-form-urlencoded':
-                length = int(self.headers.getheader('content-length'))
-                postvars = cgi.parse_qs(self.rfile.read(length), keep_blank_values=1)
-            #self.do_GET()
-            return 
+            #print "path: ", self.path
+            #print type(values), values
+            processButtons(values)
 
+            #template tricks
+            state = 'not running'
+            evf = 'loading.png'
+            if status['running']:
+                state = 'running'
+            if status['camready']:
+                evf = 'evf.jpg'
+            
+            IndexPage(state, evf)
+            try:
+                SimpleHTTPRequestHandler.do_GET(self)
+            except socket.error:
+                print "terrible thing"
     global server
     server = HTTPServer(('', 8000), extendedHandler)
     server.serve_forever()
@@ -82,7 +107,8 @@ if __name__ == "__main__":
     thread_ui.start()
     thread_ch.start()    
     while Running:
-        print "main thread"
+        if status['running']:
+            print 'spot: ', spotx, ":", spoty
         time.sleep(2)
 
     #exiting
