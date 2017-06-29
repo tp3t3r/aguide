@@ -25,11 +25,32 @@ spoty = -1
 Running = True
 server = None
 
-status = {
-    'camready' : False,
-    'islocked' : False,
-    'running' : False,
-}
+class controlFSM:
+    def __init__(self):
+        self.fsm = [
+            #status        #buttontext
+            ('waitforcam', 'N/A'),
+            ('notrunning', 'lock'),
+            ('locked', 'start tracking'),
+            ('tracking', 'stop tracking'),
+        ]
+        self.index = 0
+
+    def shiftFromState(self, prevstate):
+        index = 0
+        for idx,(s,btn) in enumerate(self.fsm):
+            if s == prevstate:
+                index = idx
+                break
+        if index == (len(self.fsm) - 1):
+            self.index = 1
+        else:
+            self.index = index + 1
+
+    def getState(self):
+        return self.fsm[self.index]
+
+cfsm = controlFSM()
 
 def imageProcessor():
     from framefactory import FrameFactory
@@ -38,30 +59,23 @@ def imageProcessor():
     infile = 'evf.png'
     evffile = 'evf.jpg'
 
-    global status,lock
+    global cfsm,lock
 
     cam = FrameFactory()
-    status['camready'] = True
+    cfsm.shiftFromState('waitforcam')
     while Running:
         #print "capturing @", time.time()
         cam.capture(infile)
         proc = FrameProcessor(infile, evffile)
-        proc.lockSpot(status['islocked'])
+        if cfsm.getState()[0] == 'locked':
+            proc.lockSpot(True)
+        else:
+            proc.lockSpot(False)
 
         x,y = proc.getSpotCoordinates()
         with lock:
             spotx = x
             spoty = y
-
-def processButtons(values):
-    global status,lock
-    if 'lock' in values:
-        with lock:
-            status['islocked'] = not status['islocked']
-    if 'start/stop' in values:
-        with lock:
-            status['running'] = not status['running']
-    print status
 
 def startUI():
     from SimpleHTTPServer import SimpleHTTPRequestHandler
@@ -77,25 +91,20 @@ def startUI():
             pass
 
         def do_GET(self):
+            global cfsm
             from urlparse import urlparse,parse_qs
             values = parse_qs(urlparse(self.path).query)
-            #print "path: ", self.path
-            #print type(values), values
-            processButtons(values)
+            state,buttontext = cfsm.getState()
+            if state == 'waitforcam':
+                IndexPage(state, 'loading.png', buttontext)
+            if 'current_state' in values:
+                cfsm.shiftFromState(values['current_state'][0])
+                state,buttontext = cfsm.getState()
+                IndexPage(state,'evf.jpg',buttontext)
 
-            #template tricks
-            state = 'not running'
-            evf = 'loading.png'
-            if status['running']:
-                state = 'running'
-            if status['camready']:
-                evf = 'evf.jpg'
-            
-            IndexPage(state, evf)
-            try:
-                SimpleHTTPRequestHandler.do_GET(self)
-            except socket.error:
-                print "terrible thing"
+            #the rest
+            SimpleHTTPRequestHandler.do_GET(self)
+
     global server
     server = HTTPServer(('', 8000), extendedHandler)
     server.serve_forever()
@@ -107,8 +116,10 @@ if __name__ == "__main__":
     thread_ui.start()
     thread_ch.start()    
     while Running:
-        if status['running']:
-            print 'spot: ', spotx, ":", spoty
+        state,buttontext = cfsm.getState()
+        if state != 'waitforcam':
+            #print 'spot: ', spotx, ":", spoty
+            pass
         time.sleep(2)
 
     #exiting

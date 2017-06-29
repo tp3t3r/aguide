@@ -11,10 +11,10 @@ class FrameFactory():
         self.camera.vflip = True
         self.camera.hflip = True
         self.camera.led = False
-        self.camera.framerate = 1
+        self.camera.framerate = 0.5
         self.camera.awb_mode = 'sunlight'
         self.camera.color_effects = (128,128)
-        self.camera.shutter_speed = 600000
+        self.camera.shutter_speed = 800000
         self.camera.ISO=800
         self.camera.meter_mode = 'average'
         print 'Setting up camera...'

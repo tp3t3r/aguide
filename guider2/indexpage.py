@@ -11,6 +11,7 @@ class IndexPage():
                             reloadImage.counter = 0;
                             var d = new Date();
                             document.getElementById('evf').src = '%s?at=' + d.getTime();
+                            document.getElementById('input_ts').value = d.getTime();
                         }
                         window.setInterval(reloadImage, 900);
                     </script>
@@ -26,12 +27,14 @@ class IndexPage():
                     <div>%s</div>
                     <div class='button-container'>
                         <form action='index.html#' method='get'>
-                            <input type='submit' value='%s' name'%s'>
+                            <input type='hidden' name='current_state' value='%s'>
+                            <input type='hidden' name='current_time' id='input_ts' value=''>
+                            <input type='submit' value='%s'>
                         </form>
                     </div>
                 </body>
             </html>
-        """ % (imagefile,imagefile,status,button,button)
+        """ % (imagefile,imagefile,status,status,button)
 
         with open(output, 'w') as fd:
             fd.write(self.template)
