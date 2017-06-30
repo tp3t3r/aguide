@@ -3,7 +3,7 @@ import pyproclib
 from PIL import Image,ImageDraw,ImageOps,ImageFont  
 
 class FrameProcessor():
-    def __init__(self, inputfile, outputfile, threshold=170):
+    def __init__(self, inputfile, outputfile, threshold):
         self.outputfile = outputfile
         self.img = Image.open(inputfile)
         self.proclib = pyproclib.Proclib()

@@ -74,7 +74,7 @@ def imageProcessor():
     while Running:
         #print "capturing @", time.time()
         cam.capture(infile)
-        proc = FrameProcessor(infile, evffile)
+        proc = FrameProcessor(infile, evffile, threshold)
         if proc.setThreshold(threshold):
             print "threshold is set to: %d\n" % threshold
         if cfsm.getState()[0] == 'locked':
