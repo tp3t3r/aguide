@@ -3,7 +3,7 @@ class IndexPage():
     def __init__(self, status, imagefile, infolog, button, threshold, output='index.html'):
         self.template="""
             <html>
-                <title>sg9k</title>
+                <title>bg9k</title>
                 <head>
                     <link rel='stylesheet' href='style.css'>
                     <script type='text/javascript'>
@@ -12,7 +12,17 @@ class IndexPage():
                             var d = new Date();
                             document.getElementById('evf').src = '%s?at=' + d.getTime();
                         }
-                        window.setInterval(reloadImage, 900);
+                        window.setInterval(reloadImage, 1500);
+                        //function getData() {
+                        //    var Httpreq = new XMLHttpRequest();
+                        //    Httpreq.open("GET",'spotdata.json',false);
+                        //    Httpreq.send(null);
+                        //    if (Httpreq.status == 200) {
+                        //        var response = Httpreq.responseText;
+                        //        document.getElementById('infolog').innerHTML += response + "\\n";
+                        //    }
+                        //}
+                        //window.setInterval(getData, 1000);
                     </script>
                     <meta http-equiv="cache-control" content="max-age=0" />
                     <meta http-equiv="cache-control" content="no-cache" />

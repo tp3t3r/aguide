@@ -14,6 +14,7 @@ void init_image(int width, int height, const char* data) {
         imp = nullptr;
     }
     unsigned slice = 16; // 16x16 segments
+
     imp = new ImageProcessor(width, height, slice, data);
 }
 

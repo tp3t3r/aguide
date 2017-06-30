@@ -90,7 +90,6 @@ def imageProcessor():
 def startUI():
     from SimpleHTTPServer import SimpleHTTPRequestHandler
     from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
-
     from indexpage import IndexPage
 
     class extendedHandler(SimpleHTTPRequestHandler):
@@ -127,10 +126,7 @@ def startUI():
 
     global server,infolog
     server = HTTPServer(('', 8000), extendedHandler)
-    try:
-        server.serve_forever()
-    except Exception as e:
-         infolog += "bad happened: %s\n" % str(e)
+    server.serve_forever()
 
 if __name__ == "__main__":            
     thread_ui = threading.Thread(target=startUI)
@@ -141,8 +137,7 @@ if __name__ == "__main__":
     while Running:
         state,buttontext,enableTH = cfsm.getState()
         if state != 'waitforcam':
-            #print 'spot: ', spotx, ":", spoty
-            pass
+            infolog += "spot[%d:%d]\n" % (spotx,spoty)
         time.sleep(2)
 
     #exiting

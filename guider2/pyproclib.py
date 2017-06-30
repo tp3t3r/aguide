@@ -1,7 +1,7 @@
 import ctypes
 
 class Proclib:
-    def __init__(self, so='/tmp/libimgproc.so'):
+    def __init__(self, so='/tmp/libprod-imgproc.so'):
 
         self.width = 320
         self.height = 240

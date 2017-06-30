@@ -3,9 +3,16 @@
 #include <string.h>
 
 ImageProcessor::ImageProcessor(int width, int height, int slice_size, const char* data) {
+#ifndef PRODUCTION_BUILD
     _width = width;
     _height = height;
     _slice_size = slice_size;
+#else
+    _width = 320;
+    _height = 240;
+    _slice_size = 16;
+#endif
+
     _slice_count = _width / _slice_size * _height / _slice_size;
     _threshold = 85; //default
     _slice_weights = new int[_slice_count];
