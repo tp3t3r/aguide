@@ -21,7 +21,7 @@ case "$1" in
 	;;
   stop)
     killall python
-    rm -rf /tm/aguide
+    rm -rf /tmp/aguide
 	;;
 
   status)
