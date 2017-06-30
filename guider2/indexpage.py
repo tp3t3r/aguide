@@ -1,4 +1,3 @@
-
 class IndexPage():
     def __init__(self, status, imagefile, infolog, button, threshold, output='index.html'):
         self.template="""
@@ -51,7 +50,6 @@ class IndexPage():
                 </body>
             </html>
         """ % (imagefile,imagefile,status,status,button,threshold)
-        print "attributes", imagefile,imagefile,status,status,button,threshold
 
         with open(output, 'w') as fd:
             fd.write(self.template)
