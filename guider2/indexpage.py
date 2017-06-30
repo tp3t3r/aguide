@@ -11,7 +11,6 @@ class IndexPage():
                             reloadImage.counter = 0;
                             var d = new Date();
                             document.getElementById('evf').src = '%s?at=' + d.getTime();
-                            document.getElementById('infolog').innerHTML += ' ' + d.getTime()
                         }
                         window.setInterval(reloadImage, 900);
                     </script>
@@ -24,15 +23,15 @@ class IndexPage():
                 <body>
                     <!--div class='title'>guide camera:</div-->
                     <div class='top_container'>
-                        <img width='640' height='480' id='evf' src='%s'></img>
+                        <img width='640' height='480' id='evf' src='%s'></img><br>
                         <textarea id='infolog' class='infolog' disabled>%s</textarea>
                         <div class='button-container'>
                             <form action='index.html#' method='get'>
                                 <input type='hidden' name='current_state' value='%s'>
-                                <input type='submit' value='%s'>
+                                <input class='button' type='submit' value='%s'>
                             </form>
                             <hr>
-                            <form action='index.html#" method='get'>
+                            <form action='index.html#' method='get'>
                                 <input type='text' name='threshold' value='%d'>
                                 <input type='submit' value='set threshold'>
                             </form>
@@ -41,6 +40,7 @@ class IndexPage():
                 </body>
             </html>
         """ % (imagefile,imagefile,status,status,button,threshold)
+        print "attributes", imagefile,imagefile,status,status,button,threshold
 
         with open(output, 'w') as fd:
             fd.write(self.template)

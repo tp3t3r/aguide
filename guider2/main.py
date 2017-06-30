@@ -32,10 +32,10 @@ class controlFSM:
     def __init__(self):
         self.fsm = [
             #status        #buttontext  #enable threshold control
-            ('waitforcam', 'N/A', True),
-            ('notrunning', 'lock', True),
-            ('locked', 'start tracking', False),
-            ('tracking', 'stop tracking', False),
+            ('waitforcam', 'refresh', True),
+            ('notrunning', 'LOCK', True),
+            ('locked', 'START tracking', False),
+            ('tracking', 'STOP tracking', False),
         ]
         self.index = 0
 
@@ -50,7 +50,7 @@ class controlFSM:
             self.index = 1
         else:
             self.index = index + 1
-        infolog += "new state: %s\n" % self.fsm[self.index]
+        infolog += "new state: %s\n" % self.fsm[self.index][0]
 
     def getState(self):
         return self.fsm[self.index]
@@ -106,14 +106,15 @@ def startUI():
             values = parse_qs(urlparse(self.path).query)
             state,buttontext,enableTH = cfsm.getState()
             if state == 'waitforcam':
-                IndexPage(state, 'loading.png', infolog, buttontext,threshold)
-
+                IndexPage(state, 'loading.png', infolog, buttontext, threshold)
+                
             #handle threshold setting
             if 'threshold' in values and enableTH:
                 print values
                 with lock:
                     if int(values['threshold'][0]) != threshold:
                         threshold = int(values['threshold'][0])
+                IndexPage(state, 'evf.jpg', infolog, buttontext, threshold)
 
             #handles state transitions
             if 'current_state' in values:
