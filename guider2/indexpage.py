@@ -1,6 +1,6 @@
 
 class IndexPage():
-    def __init__(self, status, imagefile, button, output='index.html'):
+    def __init__(self, status, imagefile, infolog, button, threshold, output='index.html'):
         self.template="""
             <html>
                 <title>sg9k</title>
@@ -11,7 +11,7 @@ class IndexPage():
                             reloadImage.counter = 0;
                             var d = new Date();
                             document.getElementById('evf').src = '%s?at=' + d.getTime();
-                            document.getElementById('input_ts').value = d.getTime();
+                            document.getElementById('infolog').innerHTML += ' ' + d.getTime()
                         }
                         window.setInterval(reloadImage, 900);
                     </script>
@@ -23,18 +23,24 @@ class IndexPage():
                 </head>
                 <body>
                     <!--div class='title'>guide camera:</div-->
-                    <img width='640' height='480' id='evf' src='%s'></img>
-                    <div>%s</div>
-                    <div class='button-container'>
-                        <form action='index.html#' method='get'>
-                            <input type='hidden' name='current_state' value='%s'>
-                            <input type='hidden' name='current_time' id='input_ts' value=''>
-                            <input type='submit' value='%s'>
-                        </form>
+                    <div class='top_container'>
+                        <img width='640' height='480' id='evf' src='%s'></img>
+                        <textarea id='infolog' class='infolog' disabled>%s</textarea>
+                        <div class='button-container'>
+                            <form action='index.html#' method='get'>
+                                <input type='hidden' name='current_state' value='%s'>
+                                <input type='submit' value='%s'>
+                            </form>
+                            <hr>
+                            <form action='index.html#" method='get'>
+                                <input type='text' name='threshold' value='%d'>
+                                <input type='submit' value='set threshold'>
+                            </form>
+                        </div>
                     </div>
                 </body>
             </html>
-        """ % (imagefile,imagefile,status,status,button)
+        """ % (imagefile,imagefile,status,status,button,threshold)
 
         with open(output, 'w') as fd:
             fd.write(self.template)

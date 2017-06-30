@@ -20,25 +20,29 @@ signal.signal(signal.SIGTERM, shutdown)
 
 #globals
 lock = threading.RLock()
-spotx = -1
+spotx = 1
 spoty = -1
 Running = True
 server = None
 
+threshold = 170
+infolog = ""
+
 class controlFSM:
     def __init__(self):
         self.fsm = [
-            #status        #buttontext
-            ('waitforcam', 'N/A'),
-            ('notrunning', 'lock'),
-            ('locked', 'start tracking'),
-            ('tracking', 'stop tracking'),
+            #status        #buttontext  #enable threshold control
+            ('waitforcam', 'N/A', True),
+            ('notrunning', 'lock', True),
+            ('locked', 'start tracking', False),
+            ('tracking', 'stop tracking', False),
         ]
         self.index = 0
 
     def shiftFromState(self, prevstate):
+        global infolog
         index = 0
-        for idx,(s,btn) in enumerate(self.fsm):
+        for idx,(s,btn,enableTH) in enumerate(self.fsm):
             if s == prevstate:
                 index = idx
                 break
@@ -46,6 +50,7 @@ class controlFSM:
             self.index = 1
         else:
             self.index = index + 1
+        infolog += "new state: %s\n" % self.fsm[self.index]
 
     def getState(self):
         return self.fsm[self.index]
@@ -59,14 +64,19 @@ def imageProcessor():
     infile = 'evf.png'
     evffile = 'evf.jpg'
 
-    global cfsm,lock
+    global threshold,cfsm,lock,infolog
+    try:
+        cam = FrameFactory()
+    except Exception as e:
+        infolog += "Camera not availble, reboot needed\n%s\n" % str(e)
 
-    cam = FrameFactory()
     cfsm.shiftFromState('waitforcam')
     while Running:
         #print "capturing @", time.time()
         cam.capture(infile)
         proc = FrameProcessor(infile, evffile)
+        if proc.setThreshold(threshold):
+            print "threshold is set to: %d\n" % threshold
         if cfsm.getState()[0] == 'locked':
             proc.lockSpot(True)
         else:
@@ -91,23 +101,35 @@ def startUI():
             pass
 
         def do_GET(self):
-            global cfsm
+            global cfsm,threshold,infolog
             from urlparse import urlparse,parse_qs
             values = parse_qs(urlparse(self.path).query)
-            state,buttontext = cfsm.getState()
+            state,buttontext,enableTH = cfsm.getState()
             if state == 'waitforcam':
-                IndexPage(state, 'loading.png', buttontext)
+                IndexPage(state, 'loading.png', infolog, buttontext,threshold)
+
+            #handle threshold setting
+            if 'threshold' in values and enableTH:
+                print values
+                with lock:
+                    if int(values['threshold'][0]) != threshold:
+                        threshold = int(values['threshold'][0])
+
+            #handles state transitions
             if 'current_state' in values:
                 cfsm.shiftFromState(values['current_state'][0])
-                state,buttontext = cfsm.getState()
-                IndexPage(state,'evf.jpg',buttontext)
+                state,buttontext,enableTH = cfsm.getState()
+                IndexPage(state, 'evf.jpg', infolog, buttontext, threshold)
 
             #the rest
             SimpleHTTPRequestHandler.do_GET(self)
 
-    global server
+    global server,infolog
     server = HTTPServer(('', 8000), extendedHandler)
-    server.serve_forever()
+    try:
+        server.serve_forever()
+    except Exception as e:
+         infolog += "bad happened: %s\n" % str(e)
 
 if __name__ == "__main__":            
     thread_ui = threading.Thread(target=startUI)
@@ -116,7 +138,7 @@ if __name__ == "__main__":
     thread_ui.start()
     thread_ch.start()    
     while Running:
-        state,buttontext = cfsm.getState()
+        state,buttontext,enableTH = cfsm.getState()
         if state != 'waitforcam':
             #print 'spot: ', spotx, ":", spoty
             pass

@@ -7,8 +7,14 @@ class FrameProcessor():
         self.outputfile = outputfile
         self.img = Image.open(inputfile)
         self.proclib = pyproclib.Proclib()
-        self.threshold = 50
+        self.threshold = threshold
         self.locked = False
+
+    def setThreshold(self, value):
+        if value != self.threshold:
+            self.threshold = value
+            return True
+        return False
 
     def lockSpot(self, value):
         self.locked = value
