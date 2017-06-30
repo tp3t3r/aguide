@@ -23,6 +23,7 @@ class IndexPage():
                 <body>
                     <!--div class='title'>guide camera:</div-->
                     <div class='top_container'>
+                        <img src='bguider9k.png'</img><br>
                         <img width='640' height='480' id='evf' src='%s'></img><br>
                         <textarea id='infolog' class='infolog' disabled>%s</textarea>
                         <div class='button-container'>
