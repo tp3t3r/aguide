@@ -1,5 +1,5 @@
 
-lighttpd
+git
 cmake
 gcc
 pytest
