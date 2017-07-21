@@ -92,6 +92,10 @@ def startUI():
     from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
     from indexpage import IndexPage
 
+    #init view
+    state,buttontext,enableTH = cfsm.getState()
+    IndexPage(state, 'loading.png', infolog, buttontext, threshold)
+
     class extendedHandler(SimpleHTTPRequestHandler):
         def __init__(self, *args):
             SimpleHTTPRequestHandler.__init__(self, *args)
@@ -104,8 +108,6 @@ def startUI():
             from urlparse import urlparse,parse_qs
             values = parse_qs(urlparse(self.path).query)
             state,buttontext,enableTH = cfsm.getState()
-            if state == 'waitforcam':
-                IndexPage(state, 'loading.png', infolog, buttontext, threshold)
                 
             #handle threshold setting
             if 'threshold' in values and enableTH:
@@ -133,7 +135,7 @@ if __name__ == "__main__":
     thread_ch = threading.Thread(target=imageProcessor)
 
     thread_ui.start()
-    thread_ch.start()    
+    thread_ch.start()
     while Running:
         state,buttontext,enableTH = cfsm.getState()
         if state != 'waitforcam':
