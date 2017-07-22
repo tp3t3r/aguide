@@ -20,8 +20,8 @@ case "$1" in
     ./main.py    
 	;;
   stop)
-    killall python
     rm -rf /tmp/aguide
+    killall python
 	;;
 
   status)

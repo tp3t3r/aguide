@@ -11,10 +11,7 @@ class FrameProcessor():
         self.locked = False
 
     def setThreshold(self, value):
-        if value != self.threshold:
-            self.threshold = value
-            return True
-        return False
+        self.threshold = value
 
     def lockSpot(self, value):
         self.locked = value

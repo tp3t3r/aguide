@@ -23,5 +23,8 @@ class FrameFactory():
         self.camera.exposure_mode = 'off'
         self.framedata = numpy.empty((320 * 240 * 3,), dtype=numpy.uint8)
 
+    def setShutterSpeed(self, value):
+        self.camera.shutter_speed = value
+
     def capture(self, pngfile):
         self.camera.capture(pngfile, use_video_port=True, format='png')

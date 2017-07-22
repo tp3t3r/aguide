@@ -1,5 +1,5 @@
 class IndexPage():
-    def __init__(self, status, imagefile, infolog, button, threshold, output='index.html'):
+    def __init__(self, status, imagefile, infolog, button, output='index.html'):
         self.template="""
             <html>
                 <title>bg9k</title>
@@ -11,7 +11,7 @@ class IndexPage():
                             var d = new Date();
                             document.getElementById('evf').src = '%s?at=' + d.getTime();
                         }
-                        window.setInterval(reloadImage, 1500);
+                        window.setInterval(reloadImage, 800);
                         //function getData() {
                         //    var Httpreq = new XMLHttpRequest();
                         //    Httpreq.open("GET",'spotdata.json',false);
@@ -40,16 +40,11 @@ class IndexPage():
                                 <input type='hidden' name='current_state' value='%s'>
                                 <input class='button' type='submit' value='%s'>
                             </form>
-                            <hr>
-                            <form action='index.html#' method='get'>
-                                <input type='text' name='threshold' value='%d'>
-                                <input type='submit' value='set threshold'>
-                            </form>
                         </div>
                     </div>
                 </body>
             </html>
-        """ % (imagefile,imagefile,status,status,button,threshold)
+        """ % (imagefile,imagefile,status,status,button)
 
         with open(output, 'w') as fd:
             fd.write(self.template)

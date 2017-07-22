@@ -19,13 +19,17 @@ signal.signal(signal.SIGINT, shutdown)
 signal.signal(signal.SIGTERM, shutdown)
 
 #globals
+OWN_IP='192.168.0.1'
+OWN_PORT=8000
+
+
 lock = threading.RLock()
 spotx = 1
 spoty = -1
 Running = True
 server = None
-
 threshold = 170
+shutterspeed = 600000
 infolog = ""
 
 class controlFSM:
@@ -64,7 +68,7 @@ def imageProcessor():
     infile = 'evf.png'
     evffile = 'evf.jpg'
 
-    global threshold,cfsm,lock,infolog
+    global threshold,shutterspeed,cfsm,lock,infolog
     try:
         cam = FrameFactory()
     except Exception as e:
@@ -75,8 +79,11 @@ def imageProcessor():
         #print "capturing @", time.time()
         cam.capture(infile)
         proc = FrameProcessor(infile, evffile, threshold)
-        if proc.setThreshold(threshold):
-            print "threshold is set to: %d\n" % threshold
+
+        #config setttngs
+        proc.setThreshold(threshold)
+        cam.setShutterSpeed(shutterspeed)
+
         if cfsm.getState()[0] == 'locked':
             proc.lockSpot(True)
         else:
@@ -94,7 +101,7 @@ def startUI():
 
     #init view
     state,buttontext,enableTH = cfsm.getState()
-    IndexPage(state, 'loading.png', infolog, buttontext, threshold)
+    IndexPage(state, 'loading.png', infolog, buttontext)
 
     class extendedHandler(SimpleHTTPRequestHandler):
         def __init__(self, *args):
@@ -104,30 +111,37 @@ def startUI():
             pass
 
         def do_GET(self):
-            global cfsm,threshold,infolog
+            global cfsm,threshold,shutterspeed,infolog,OWN_IP,OWN_PORT
             from urlparse import urlparse,parse_qs
             values = parse_qs(urlparse(self.path).query)
             state,buttontext,enableTH = cfsm.getState()
-                
-            #handle threshold setting
-            if 'threshold' in values and enableTH:
-                print values
-                with lock:
-                    if int(values['threshold'][0]) != threshold:
-                        threshold = int(values['threshold'][0])
-                IndexPage(state, 'evf.jpg', infolog, buttontext, threshold)
 
-            #handles state transitions
-            if 'current_state' in values:
-                cfsm.shiftFromState(values['current_state'][0])
-                state,buttontext,enableTH = cfsm.getState()
-                IndexPage(state, 'evf.jpg', infolog, buttontext, threshold)
+            if urlparse(self.path).path == "/config.html":
+                #setup
+                values = parse_qs(urlparse(self.path).query)
+                if 'shutterspeed' in values:
+                    shutterspeed = int(values['shutterspeed'][0])
+                if 'threshold' in values:
+                    threshold = int(values['threshold'][0])
+                #return to main page 
+                print values, type(values)
+                #if values:
+                #    self.send_response(301)
+                #    self.send_header('Location', 'http://%s:%d/index.html' % (OWN_IP, OWN_PORT))
+                #    self.end_headers()
+            else:
+                #main GUI
+                #handles state transitions
+                if 'current_state' in values:
+                    cfsm.shiftFromState(values['current_state'][0])
+                    state,buttontext,enableTH = cfsm.getState()
+                    IndexPage(state, 'evf.jpg', infolog, buttontext)
 
             #the rest
             SimpleHTTPRequestHandler.do_GET(self)
 
-    global server,infolog
-    server = HTTPServer(('', 8000), extendedHandler)
+    global server,OWN_PORT
+    server = HTTPServer(('', OWN_PORT), extendedHandler)
     server.serve_forever()
 
 if __name__ == "__main__":            
@@ -141,6 +155,7 @@ if __name__ == "__main__":
         if state != 'waitforcam':
             infolog += "spot[%d:%d]\n" % (spotx,spoty)
         time.sleep(2)
+        print infolog
 
     #exiting
     thread_ui.join()
