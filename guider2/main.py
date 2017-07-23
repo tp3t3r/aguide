@@ -91,6 +91,7 @@ def imageProcessor():
 
         x,y = proc.getSpotCoordinates()
         with lock:
+            global spotx, spoty
             spotx = x
             spoty = y
 
@@ -114,28 +115,17 @@ def startUI():
             global cfsm,threshold,shutterspeed,infolog,OWN_IP,OWN_PORT
             from urlparse import urlparse,parse_qs
             values = parse_qs(urlparse(self.path).query)
+            path = urlparse(self.path).path
             state,buttontext,enableTH = cfsm.getState()
 
-            if urlparse(self.path).path == "/config.html":
-                #setup
-                values = parse_qs(urlparse(self.path).query)
-                if 'shutterspeed' in values:
-                    shutterspeed = int(values['shutterspeed'][0])
-                if 'threshold' in values:
-                    threshold = int(values['threshold'][0])
-                #return to main page 
-                print values, type(values)
-                #if values:
-                #    self.send_response(301)
-                #    self.send_header('Location', 'http://%s:%d/index.html' % (OWN_IP, OWN_PORT))
-                #    self.end_headers()
-            else:
-                #main GUI
-                #handles state transitions
-                if 'current_state' in values:
-                    cfsm.shiftFromState(values['current_state'][0])
-                    state,buttontext,enableTH = cfsm.getState()
-                    IndexPage(state, 'evf.jpg', infolog, buttontext)
+            if 'shutterspeed' in values:
+                shutterspeed = int(values['shutterspeed'][0])
+            if 'threshold' in values:
+                threshold = int(values['threshold'][0])
+            if 'current_state' in values:
+                cfsm.shiftFromState(values['current_state'][0])
+                state,buttontext,enableTH = cfsm.getState()
+                IndexPage(state, 'evf.jpg', infolog, buttontext)
 
             #the rest
             SimpleHTTPRequestHandler.do_GET(self)
@@ -155,7 +145,6 @@ if __name__ == "__main__":
         if state != 'waitforcam':
             infolog += "spot[%d:%d]\n" % (spotx,spoty)
         time.sleep(2)
-        print infolog
 
     #exiting
     thread_ui.join()

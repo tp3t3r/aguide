@@ -32,3 +32,10 @@ body {
     resize: none;
     font-family: "Courier", "Monospace";
 }
+
+.config {
+    font-family: "Arial", "Verdana";
+    font-size: 1.5em;
+    color: #FFC300;
+    text-align: center;
+}
