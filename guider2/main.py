@@ -80,9 +80,11 @@ def imageProcessor():
         cam.capture(infile)
         proc = FrameProcessor(infile, evffile, threshold)
 
-        #config setttngs
+        #config settings
         proc.setThreshold(threshold)
-        cam.setShutterSpeed(shutterspeed)
+        
+        ss = cam.setShutterSpeed(shutterspeed)
+        if ss: print "shutter speed set to: %d\n" % ss
 
         if cfsm.getState()[0] == 'locked':
             proc.lockSpot(True)
@@ -98,7 +100,7 @@ def imageProcessor():
 def startUI():
     from SimpleHTTPServer import SimpleHTTPRequestHandler
     from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
-    from indexpage import IndexPage
+    from indexpage import IndexPage,ConfigPage
 
     #init view
     state,buttontext,enableTH = cfsm.getState()
@@ -126,6 +128,9 @@ def startUI():
                 cfsm.shiftFromState(values['current_state'][0])
                 state,buttontext,enableTH = cfsm.getState()
                 IndexPage(state, 'evf.jpg', infolog, buttontext)
+
+            if path == "/config.html":
+                ConfigPage(threshold, shutterspeed)
 
             #the rest
             SimpleHTTPRequestHandler.do_GET(self)

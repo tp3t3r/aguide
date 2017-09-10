@@ -14,7 +14,7 @@ class FrameFactory():
         self.camera.framerate = 1.0
         self.camera.awb_mode = 'sunlight'
         self.camera.color_effects = (128,128)
-        self.camera.shutter_speed = 600000
+        self.camera.shutter_speed = 100000
         self.camera.ISO=800
         self.camera.meter_mode = 'average'
         print 'Setting up camera...'
@@ -24,7 +24,10 @@ class FrameFactory():
         self.framedata = numpy.empty((320 * 240 * 3,), dtype=numpy.uint8)
 
     def setShutterSpeed(self, value):
-        self.camera.shutter_speed = value
+        if abs(value - self.camera.shutter_speed) > 100:
+            self.camera.shutter_speed = value
+            return self.camera.shutter_speed
+        return False
 
     def capture(self, pngfile):
         self.camera.capture(pngfile, use_video_port=True, format='png')
