@@ -17,7 +17,7 @@ case "$1" in
   start)
     cp -r /home/pi/aguide /tmp/
     cd /tmp/aguide/guider2
-    ./main.py    
+    ./main.py $2
 	;;
   stop)
     rm -rf /tmp/aguide

@@ -4,6 +4,7 @@ import threading
 import time
 import signal
 import sys
+import shutil
 
 #redirect
 sys.stderr = sys.stdout
@@ -19,6 +20,7 @@ signal.signal(signal.SIGINT, shutdown)
 signal.signal(signal.SIGTERM, shutdown)
 
 #globals
+capture=False
 OWN_IP='192.168.0.1'
 OWN_PORT=8000
 
@@ -28,8 +30,8 @@ spotx = 1
 spoty = -1
 Running = True
 server = None
-threshold = 170
-shutterspeed = 600000
+threshold = 15
+shutterspeed = 700000
 infolog = ""
 
 class controlFSM:
@@ -68,16 +70,21 @@ def imageProcessor():
     infile = 'evf.png'
     evffile = 'evf.jpg'
 
-    global threshold,shutterspeed,cfsm,lock,infolog
+    global threshold,shutterspeed,cfsm,lock,infolog,capture
     try:
         cam = FrameFactory()
     except Exception as e:
         infolog += "Camera not availble, reboot needed\n%s\n" % str(e)
 
     cfsm.shiftFromState('waitforcam')
+    counter = 0
     while Running:
         #print "capturing @", time.time()
         cam.capture(infile)
+        if capture:
+            #saving input
+            shutil.copyfile(infile, '/tmp/cap_%04d.png' % counter) 
+            counter += 1
         proc = FrameProcessor(infile, evffile, threshold)
 
         #config settings
@@ -140,6 +147,9 @@ def startUI():
     server.serve_forever()
 
 if __name__ == "__main__":            
+    if len(sys.argv) == 2 and sys.argv[1] == '--capture':
+        capture=True
+        print "Capturing enabled"
     thread_ui = threading.Thread(target=startUI)
     thread_ch = threading.Thread(target=imageProcessor)
 
