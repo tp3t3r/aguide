@@ -14,11 +14,11 @@ class FrameFactory():
         self.camera.framerate = 1.0
         self.camera.awb_mode = 'sunlight'
         self.camera.color_effects = (128,128)
-        self.camera.shutter_speed = 100000
-        self.camera.ISO=800
+        self.camera.shutter_speed = 700000
+        self.camera.ISO=1600
         self.camera.meter_mode = 'average'
         print 'Setting up camera...'
-        time.sleep(10)
+        time.sleep(5)
         print 'OK\n'
         self.camera.exposure_mode = 'off'
         self.framedata = numpy.empty((320 * 240 * 3,), dtype=numpy.uint8)
