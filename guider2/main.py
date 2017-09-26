@@ -74,6 +74,7 @@ def imageProcessor():
     try:
         cam = FrameFactory()
     except Exception as e:
+        print "error", str(e)
         infolog += "Camera not availble, reboot needed\n%s\n" % str(e)
 
     cfsm.shiftFromState('waitforcam')
@@ -124,7 +125,9 @@ def startUI():
             global cfsm,threshold,shutterspeed,infolog,OWN_IP,OWN_PORT
             from urlparse import urlparse,parse_qs
             values = parse_qs(urlparse(self.path).query)
+            print "values: ", values
             path = urlparse(self.path).path
+            print "path: ", path
             state,buttontext,enableTH = cfsm.getState()
 
             if 'shutterspeed' in values:
@@ -135,8 +138,10 @@ def startUI():
                 cfsm.shiftFromState(values['current_state'][0])
                 state,buttontext,enableTH = cfsm.getState()
                 IndexPage(state, 'evf.jpg', infolog, buttontext)
+                infolog=""
 
             if path == "/config.html":
+                print "GET /config.html"
                 ConfigPage(threshold, shutterspeed)
 
             #the rest

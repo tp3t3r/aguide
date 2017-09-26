@@ -65,7 +65,7 @@ class IndexPage():
                         </div>
                     </div>
                     <hr>
-                    <div class='config'><a href='config.html#'>settings</div>
+                    <div class='config'><a href='config.html'>settings</div>
                 </body>
             </html>
         """ % (imagefile,imagefile,status,status,button)
