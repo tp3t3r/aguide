@@ -32,14 +32,6 @@ class FrameProcessor():
             #    jpg_overlay.text((0, 0),"[freerun]",(0,255,0),font=font)
         jpg.save(self.outputfile, quality=99)
 
-    def writeJson(self, x, y, filename='spotdata.json'):
-        with open(filename + '.tmp', 'w') as fd:
-            fd.write('{ "x": %d, "y": %d }' % (x,y))
-        from os import rename
-        try:
-            rename(filename + '.tmp', filename)
-        except: pass
-
     def getSpotCoordinates(self):
         #luminance data for processing
         imgdata = list(self.img.convert('L').getdata())
@@ -47,5 +39,4 @@ class FrameProcessor():
         self.proclib.setThreshold(self.threshold)
         x,y = self.proclib.getSpotCoordinates()
         self.addRectangle(x,y)
-        self.writeJson(x,y)
         return x,y

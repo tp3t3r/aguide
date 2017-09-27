@@ -6,6 +6,8 @@ import signal
 import sys
 import shutil
 
+from infolog import InfoLog
+
 #redirect
 sys.stderr = sys.stdout
 
@@ -32,7 +34,7 @@ Running = True
 server = None
 threshold = 15
 shutterspeed = 700000
-infolog = ""
+infolog = InfoLog()
 
 class controlFSM:
     def __init__(self):
@@ -56,7 +58,7 @@ class controlFSM:
             self.index = 1
         else:
             self.index = index + 1
-        infolog += "new state: %s\n" % self.fsm[self.index][0]
+        infolog.add("new state: %s" % self.fsm[self.index][0])
 
     def getState(self):
         return self.fsm[self.index]
@@ -75,7 +77,7 @@ def imageProcessor():
         cam = FrameFactory()
     except Exception as e:
         print "error", str(e)
-        infolog += "Camera not availble, reboot needed\n%s\n" % str(e)
+        infolog.add("Camera not availble, reboot needed")
 
     cfsm.shiftFromState('waitforcam')
     counter = 0
@@ -112,7 +114,7 @@ def startUI():
 
     #init view
     state,buttontext,enableTH = cfsm.getState()
-    IndexPage(state, 'loading.png', infolog, buttontext)
+    IndexPage(state, 'loading.png', buttontext)
 
     class extendedHandler(SimpleHTTPRequestHandler):
         def __init__(self, *args):
@@ -125,9 +127,7 @@ def startUI():
             global cfsm,threshold,shutterspeed,infolog,OWN_IP,OWN_PORT
             from urlparse import urlparse,parse_qs
             values = parse_qs(urlparse(self.path).query)
-            print "values: ", values
             path = urlparse(self.path).path
-            print "path: ", path
             state,buttontext,enableTH = cfsm.getState()
 
             if 'shutterspeed' in values:
@@ -137,11 +137,9 @@ def startUI():
             if 'current_state' in values:
                 cfsm.shiftFromState(values['current_state'][0])
                 state,buttontext,enableTH = cfsm.getState()
-                IndexPage(state, 'evf.jpg', infolog, buttontext)
-                infolog=""
+                IndexPage(state, 'evf.jpg', buttontext)
 
             if path == "/config.html":
-                print "GET /config.html"
                 ConfigPage(threshold, shutterspeed)
 
             #the rest
@@ -155,6 +153,7 @@ if __name__ == "__main__":
     if len(sys.argv) == 2 and sys.argv[1] == '--capture':
         capture=True
         print "Capturing enabled"
+        infolog.add("CAPTURING ENABLED")
     thread_ui = threading.Thread(target=startUI)
     thread_ch = threading.Thread(target=imageProcessor)
 
@@ -163,7 +162,7 @@ if __name__ == "__main__":
     while Running:
         state,buttontext,enableTH = cfsm.getState()
         if state != 'waitforcam':
-            infolog += "spot[%d:%d]\n" % (spotx,spoty)
+            pass
         time.sleep(2)
 
     #exiting

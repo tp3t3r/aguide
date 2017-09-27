@@ -21,7 +21,7 @@ class ConfigPage():
             fd.write(self.template)
  
 class IndexPage():
-    def __init__(self, status, imagefile, infolog, button, output='index.html'):
+    def __init__(self, status, imagefile, button, output='index.html'):
         self.template="""
             <html>
                 <title>bg9k</title>
@@ -34,16 +34,16 @@ class IndexPage():
                             document.getElementById('evf').src = '%s?at=' + d.getTime();
                         }
                         window.setInterval(reloadImage, 800);
-                        //function getData() {
-                        //    var Httpreq = new XMLHttpRequest();
-                        //    Httpreq.open("GET",'spotdata.json',false);
-                        //    Httpreq.send(null);
-                        //    if (Httpreq.status == 200) {
-                        //        var response = Httpreq.responseText;
-                        //        document.getElementById('infolog').innerHTML += response + "\\n";
-                        //    }
-                        //}
-                        //window.setInterval(getData, 1000);
+                        function getData() {
+                            var Httpreq = new XMLHttpRequest();
+                            Httpreq.open("GET",'infolog.dat',false);
+                            Httpreq.send(null);
+                            if (Httpreq.status == 200) {
+                                var response = Httpreq.responseText;
+                                document.getElementById('infolog').innerHTML += response + "\\n";
+                            }
+                        }
+                        window.setInterval(getData, 800);
                     </script>
                     <meta http-equiv="cache-control" content="max-age=0" />
                     <meta http-equiv="cache-control" content="no-cache" />
@@ -56,7 +56,7 @@ class IndexPage():
                     <div class='top_container'>
                         <img src='bguider9k.png'</img><br>
                         <a href='index.html#'><img width='720' height='540' id='evf' src='%s'></img></a><br>
-                        <textarea id='infolog' class='infolog' disabled>%s</textarea>
+                        <textarea id='infolog' class='infolog' disabled></textarea>
                         <div class='button-container'>
                             <form action='index.html#' method='get'>
                                 <input type='hidden' name='current_state' value='%s'>
@@ -68,7 +68,7 @@ class IndexPage():
                     <div class='config'><a href='config.html'>settings</div>
                 </body>
             </html>
-        """ % (imagefile,imagefile,status,status,button)
+        """ % (imagefile,imagefile,status,button)
 
         with open(output, 'w') as fd:
             fd.write(self.template)
