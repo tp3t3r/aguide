@@ -40,7 +40,7 @@ class IndexPage():
                             Httpreq.send(null);
                             if (Httpreq.status == 200) {
                                 var response = Httpreq.responseText;
-                                document.getElementById('infolog').innerHTML += response + "\\n";
+                                document.getElementById('infolog').innerHTML = response + "\\n";
                             }
                         }
                         window.setInterval(getData, 800);

@@ -104,6 +104,9 @@ def imageProcessor():
         x,y = proc.getSpotCoordinates()
         with lock:
             global spotx, spoty
+            if spotx != x or spoty !=y:
+                #moved away...
+                infolog.add('dist: [%d:%d]' % (x-spotx, y-spoty))
             spotx = x
             spoty = y
 
