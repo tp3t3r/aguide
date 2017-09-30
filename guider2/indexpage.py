@@ -21,7 +21,7 @@ class ConfigPage():
             fd.write(self.template)
  
 class IndexPage():
-    def __init__(self, status, imagefile, button, output='index.html'):
+    def __init__(self, status, imagefile, button, refresh=1200, output='index.html'):
         self.template="""
             <html>
                 <title>bg9k</title>
@@ -33,7 +33,7 @@ class IndexPage():
                             var d = new Date();
                             document.getElementById('evf').src = '%s?at=' + d.getTime();
                         }
-                        window.setInterval(reloadImage, 800);
+                        window.setInterval(reloadImage, %d);
                         function getData() {
                             var Httpreq = new XMLHttpRequest();
                             Httpreq.open("GET",'infolog.dat',false);
@@ -43,7 +43,7 @@ class IndexPage():
                                 document.getElementById('infolog').innerHTML = response + "\\n";
                             }
                         }
-                        window.setInterval(getData, 800);
+                        window.setInterval(getData, %d);
                     </script>
                     <meta http-equiv="cache-control" content="max-age=0" />
                     <meta http-equiv="cache-control" content="no-cache" />
@@ -68,7 +68,7 @@ class IndexPage():
                     <div class='config'><a href='config.html'>settings</div>
                 </body>
             </html>
-        """ % (imagefile,imagefile,status,button)
+        """ % (imagefile,refresh,refresh,imagefile,status,button)
 
         with open(output, 'w') as fd:
             fd.write(self.template)
