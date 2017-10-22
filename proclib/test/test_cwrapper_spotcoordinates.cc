@@ -6,7 +6,7 @@
 int test_spotcoords() {
     init_image(48,32,img_sample);
     int x, y;
-    get_spot_coordinates(&x, &y);
+    get_spot_coordinates(&x, &y, false);
     if (x != 27 && y != 12) {
         TEST_RESULT("wrong coordinates: %d:%d\n", x, y);
         return -1;

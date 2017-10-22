@@ -7,11 +7,12 @@ int main(int argc, char** argv) {
     ImageProcessor imp(48,32,8,img_sample);
 
     int x, y, x2, y2;
+    bool l = false;
 
-    imp.getSpotCoordinates(&x, &y);
+    imp.getSpotCoordinates(&x, &y, l);
 
     imp.addFrame(img_sample2);
-    imp.getSpotCoordinates(&x2, &y2);
+    imp.getSpotCoordinates(&x2, &y2, l);
 
     int diffx = x2 - x;
     int diffy = y2 - y; 

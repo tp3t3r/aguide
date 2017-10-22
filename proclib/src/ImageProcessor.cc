@@ -16,7 +16,6 @@ ImageProcessor::ImageProcessor(int width, int height, int slice_size, const char
     _slice_count = _width / _slice_size * _height / _slice_size;
     _threshold = 85; //default
     _slice_weights = new int[_slice_count];
-    _locked = false;
      
     _data = new char[_width * _height];
     addFrame(data);
@@ -30,9 +29,6 @@ void ImageProcessor::addFrame(const char* data) {
 
 void ImageProcessor::setThreshold(int th) {
     _threshold = th;
-}
-void ImageProcessor::lockSpot(bool enable) {
-    _locked = enable;
 }
 void ImageProcessor::getBrightestSlice(int *x_area, int *y_area, int *brightness) {
     memset(_slice_weights, 0, _slice_count*sizeof(_slice_count));
@@ -71,12 +67,13 @@ void ImageProcessor::getBrightestSlice(int *x_area, int *y_area, int *brightness
 
 }
 
-void ImageProcessor::getSpotCoordinates(int * x, int * y) {
-    *x = -1;
-    *y = -1;
-
+void ImageProcessor::getSpotCoordinates(int * x, int * y, bool isLocked) {
+    if (!isLocked) {
+        *x = -1;
+        *y = -1;
+    }
     static int x_area, y_area, brightness;
-    if ( !_locked) {
+    if (!isLocked) {
         getBrightestSlice(&x_area, &y_area, &brightness);
         if ( x_area < 0 || y_area < 0 || brightness < 1) {
             //printf("not bright spot");

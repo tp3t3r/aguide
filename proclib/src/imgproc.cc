@@ -18,14 +18,10 @@ void init_image(int width, int height, const char* data) {
     imp = new ImageProcessor(width, height, slice, data);
 }
 
-void get_spot_coordinates(int *x, int *y) {
+void get_spot_coordinates(int *x, int *y, bool is_locked) {
     if (imp) {
-        imp->getSpotCoordinates(x, y);
+        imp->getSpotCoordinates(x, y, is_locked);
     }
-}
-
-int lock_spot(void) {
-    //todo
 }
 
 void set_threshold(int th) {
