@@ -6,7 +6,7 @@ body {
     font-size: 20px;
     text-align: center;
     padding: 5px 5px;
-    width:160px;
+    width:40%;
     margin:10px;
     background-color: #ff9900;
     border: none;
@@ -26,7 +26,7 @@ body {
 }
 
 .infolog {
-    width: 720px;
+    width: 100%;
     height: 100px;
     margin-top: 10px;
     resize: none;
