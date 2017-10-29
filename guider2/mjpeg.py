@@ -26,11 +26,12 @@ def StartStream(filename='evf.jpg'):
     def getContents(filename):
         with open(filename, "rb") as f:
             # for byte in f.read(1) while/if byte ?
-            byte = f.read(1)
+            bsize=1024
+            byte = f.read(bsize)
             while byte:
                 yield byte
                 # Next byte
-                byte = f.read(1)
+                byte = f.read(bsize)
 
     def waitForFile():
         global inot
@@ -47,10 +48,7 @@ def StartStream(filename='evf.jpg'):
             for k, v in request_headers().items():
                 self.send_header(k, v) 
             # Multipart content
-            prev_image = None
             while True:
-                if prev_image:
-                    os.unlink(prev_image)
                 # Part boundary string
                 self.end_headers()
                 self.wfile.write(boundary)
@@ -66,7 +64,6 @@ def StartStream(filename='evf.jpg'):
                 for chunk in getContents(path):
                     self.wfile.write(chunk)
                 prev_image = path
-                time.sleep(0.2)
 
         def log_message(self, format, *args):
             pass

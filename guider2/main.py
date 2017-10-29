@@ -97,12 +97,10 @@ def imageProcessor():
         
         ss = cam.setShutterSpeed(shutterspeed)
         if ss: print "shutter speed set to: %d\n" % ss
-
         if cfsm.getState()[0] == 'locked':
             proc.lockSpot(True)
         else:
             proc.lockSpot(False)
-
         x,y = proc.getSpotCoordinates()
         with lock:
             global spotx, spoty
@@ -164,7 +162,6 @@ if __name__ == "__main__":
 
     thread_ui.start()
     thread_ch.start()
-    #thread_mjpeg.start()
     while Running:
         state,buttontext,enableTH = cfsm.getState()
         if state != 'waitforcam':
