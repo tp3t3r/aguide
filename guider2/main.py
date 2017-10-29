@@ -70,7 +70,7 @@ def imageProcessor():
     from frameprocessor import FrameProcessor
 
     infile = 'evf.png'
-    evffile = 'evf.jpg'
+    evffile = 'evf_%02d.jpg'
 
     global threshold,shutterspeed,cfsm,lock,infolog,capture
     try:
@@ -81,6 +81,7 @@ def imageProcessor():
 
     cfsm.shiftFromState('waitforcam')
     counter = 0
+    jpegcount = 0
     while Running:
         #print "capturing @", time.time()
         cam.capture(infile)
@@ -88,7 +89,8 @@ def imageProcessor():
             #saving input
             shutil.copyfile(infile, '/tmp/cap_%04d.png' % counter) 
             counter += 1
-        proc = FrameProcessor(infile, evffile, threshold)
+        proc = FrameProcessor(infile, evffile % (jpegcount % 10), threshold)
+        jpegcount += 1
 
         #config settings
         proc.setThreshold(threshold)
@@ -140,7 +142,7 @@ def startUI():
             if 'current_state' in values:
                 cfsm.shiftFromState(values['current_state'][0])
                 state,buttontext,enableTH = cfsm.getState()
-                IndexPage(state, 'evf.jpg', buttontext)
+                IndexPage(state, 'http://192.168.0.1:5000', buttontext)
 
             if path == "/config.html":
                 ConfigPage(threshold, shutterspeed)
@@ -162,6 +164,7 @@ if __name__ == "__main__":
 
     thread_ui.start()
     thread_ch.start()
+    #thread_mjpeg.start()
     while Running:
         state,buttontext,enableTH = cfsm.getState()
         if state != 'waitforcam':
@@ -171,4 +174,5 @@ if __name__ == "__main__":
     #exiting
     thread_ui.join()
     thread_ch.join()
+
 

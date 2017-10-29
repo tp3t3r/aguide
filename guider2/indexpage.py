@@ -8,6 +8,7 @@ class ConfigPage():
                     <meta http-equiv="expires" content="0" />
                     <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
                     <meta http-equiv="pragma" content="no-cache" />
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
             </head>
             <form action='index.html' method='get'>
                 threshold: <input type='text' name='threshold' value='%d'><input type='submit' value='set'>
@@ -21,19 +22,13 @@ class ConfigPage():
             fd.write(self.template)
  
 class IndexPage():
-    def __init__(self, status, imagefile, button, refresh=1200, output='index.html'):
+    def __init__(self, status, stream, button, refresh=1200, output='index.html'):
         self.template="""
             <html>
                 <title>bg9k</title>
                 <head>
                     <link rel='stylesheet' href='style.css'>
                     <script type='text/javascript'>
-                        function reloadImage() {
-                            reloadImage.counter = 0;
-                            var d = new Date();
-                            document.getElementById('evf').src = '%s?at=' + d.getTime();
-                        }
-                        window.setInterval(reloadImage, %d);
                         function getData() {
                             var Httpreq = new XMLHttpRequest();
                             Httpreq.open("GET",'infolog.dat',false);
@@ -45,6 +40,7 @@ class IndexPage():
                         }
                         window.setInterval(getData, %d);
                     </script>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"> 
                     <meta http-equiv="cache-control" content="max-age=0" />
                     <meta http-equiv="cache-control" content="no-cache" />
                     <meta http-equiv="expires" content="0" />
@@ -54,8 +50,8 @@ class IndexPage():
                 <body>
                     <!--div class='title'>guide camera:</div-->
                     <div class='top_container'>
-                        <img src='bguider9k.png'</img><br>
-                        <a href='index.html#'><img width='720' height='540' id='evf' src='%s'></img></a><br>
+                        <h2>buksiguider9000</h2>
+                        <a href='index.html#'><img style='width:100%%' id='evf' src='%s'></img></a><br>
                         <textarea id='infolog' class='infolog' disabled></textarea>
                         <div class='button-container'>
                             <form action='index.html#' method='get'>
@@ -68,7 +64,7 @@ class IndexPage():
                     <div class='config'><a href='config.html'>settings</div>
                 </body>
             </html>
-        """ % (imagefile,refresh,refresh,imagefile,status,button)
+        """ % (refresh,stream,status,button)
 
         with open(output, 'w') as fd:
             fd.write(self.template)

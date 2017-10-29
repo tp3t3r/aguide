@@ -17,6 +17,7 @@ case "$1" in
   start)
     cp -r /home/pi/aguide /tmp/
     cd /tmp/aguide/guider2
+    ./mjpeg.py &
     ./main.py $2
 	;;
   stop)
