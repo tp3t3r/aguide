@@ -48,9 +48,8 @@ class IndexPage():
                     <meta http-equiv="pragma" content="no-cache" />
                 </head>
                 <body>
-                    <!--div class='title'>guide camera:</div-->
+                    <div class='title'>buksiguider9000</div>
                     <div class='top_container'>
-                        <h2>buksiguider9000</h2>
                         <a href='index.html#'><img style='width:100%%' id='evf' src='%s'></img></a><br>
                         <textarea id='infolog' class='infolog' disabled></textarea>
                         <div class='button-container'>
