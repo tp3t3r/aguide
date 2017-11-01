@@ -58,7 +58,7 @@ class controlFSM:
             self.index = 1
         else:
             self.index = index + 1
-        infolog.add("new state: %s" % self.fsm[self.index][0])
+        infolog.add("state: %s" % self.fsm[self.index][0])
 
     def getState(self):
         return self.fsm[self.index]
@@ -106,7 +106,8 @@ def imageProcessor():
             global spotx, spoty
             if spotx != x or spoty !=y:
                 #moved away...
-                infolog.add('dist: [%d:%d]' % (x-spotx, y-spoty))
+                if cfsm.getState()[0] == 'locked' or cfsm.getState()[0] == 'running':
+                    infolog.add('delta: [%d:%d]' % (x-spotx, y-spoty))
             spotx = x
             spoty = y
 
