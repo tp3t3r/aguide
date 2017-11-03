@@ -14,6 +14,6 @@ int main(int argc, char** argv) {
     imp.getBrightestSlice(&x,&y,&b);
     printf("%d,%d,%d\n", x, y, b);
     
-    imp.getSpotCoordinates(&x, &y, false);
+    imp.getSpotCoordinates(&x, &y);
     return 0;
 }

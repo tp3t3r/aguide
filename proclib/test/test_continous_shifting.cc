@@ -9,15 +9,14 @@ int main(int argc, char** argv) {
     ImageProcessor imp(32,32,8,tf.getFrame());
 
     int xstart,ystart;
-    bool l = false;
-    imp.getSpotCoordinates(&xstart, &ystart, l);
+    imp.getSpotCoordinates(&xstart, &ystart);
 
     int xnew,ynew;
 
     for (int i=0; i < 30; i++) {
         tf.shiftFrame(1,1);
         imp.addFrame(tf.getFrame());
-        imp.getSpotCoordinates(&xnew, &ynew, l);
+        imp.getSpotCoordinates(&xnew, &ynew);
         printf("diff: %d,%d\n", xnew-xstart, ynew-ystart);
     }
 

@@ -9,14 +9,14 @@ int main(int argc, char** argv) {
     ImageProcessor imp(32,32,8,tf.getFrame());
 
     int xstart,ystart;
-    imp.getSpotCoordinates(&xstart, &ystart, false);
+    imp.getSpotCoordinates(&xstart, &ystart);
     
     int xnew,ynew;
     int xoffset = 20;
     int yoffset = 3;
     tf.shiftFrame(xoffset,yoffset);
     imp.addFrame(tf.getFrame());
-    imp.getSpotCoordinates(&xnew, &ynew, false);
+    imp.getSpotCoordinates(&xnew, &ynew);
 
     if ((xnew - xstart != xoffset) || (ynew - ystart) != yoffset) {
         TEST_RESULT("%d:%d is not %d:%d\n", xstart, ystart, xstart+xoffset, ynew+yoffset);

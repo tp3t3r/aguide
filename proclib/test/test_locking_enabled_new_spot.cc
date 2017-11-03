@@ -10,12 +10,14 @@ int main(int argc, char** argv) {
 
     int x,y;
     int x2,y2;
-    imp.getSpotCoordinates(&x, &y, false);
+    imp.getSpotCoordinates(&x, &y);
     printf("%d:%d\n", x, y);
     
+    imp.lockSpot(true);
+
     tf.addLargerSpot(12,14);
     imp.addFrame(tf.getFrame());
-    imp.getSpotCoordinates(&x2, &y2, true);
+    imp.getSpotCoordinates(&x2, &y2);
     
     if ((x != x2) || (y != y2)) {
         TEST_RESULT("locking didn't work\n");
