@@ -26,6 +26,10 @@ class Proclib:
         self.get_image_buffer.argtypes = None
         self.get_image_buffer.restype = self.buffer_type
 
+        self.lock_spot = self.lib.lock_spot
+        self.lock_spot.argtypes = [ ctypes.c_int ]
+        self.lock_spot.restype = None
+
     def initImage(self, data):
         self.init_image(320,240, (ctypes.c_ubyte * self.resolution)(*data))
 
@@ -38,5 +42,7 @@ class Proclib:
     def setThreshold(self,th):
         self.set_threshold(th)
 
-
+    def lockSpot(self, val):
+        print "locking in pyproclib"
+        self.lock_spot(val)
 

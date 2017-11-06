@@ -97,7 +97,7 @@ def imageProcessor():
         
         ss = cam.setShutterSpeed(shutterspeed)
         if ss: print "shutter speed set to: %d\n" % ss
-        if cfsm.getState()[0] == 'locked':
+        if cfsm.getState()[0] == 'locked' or cfsm.getState()[0] == 'running':
             proc.lockSpot(True)
         else:
             proc.lockSpot(False)

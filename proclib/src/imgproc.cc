@@ -24,8 +24,10 @@ void get_spot_coordinates(int *x, int *y) {
     }
 }
 
-int lock_spot(void) {
-    //todo
+void lock_spot(int l) {
+    if (imp) {
+        imp->lockSpot((bool)l);
+    }
 }
 
 void set_threshold(int th) {
