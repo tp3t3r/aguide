@@ -50,6 +50,10 @@ inotify_add_watch = libc.inotify_add_watch
 inotify_add_watch.argtypes = [ ctypes.c_int, ctypes.c_char_p, ctypes.c_uint ]
 inotify_add_watch.restype = checkRet
 
+inotify_rm_watch = libc.inotify_rm_watch
+inotify_rm_watch.argtypes = [ ctypes.c_int, ctypes.c_int ]
+inotify_rm_watch.restype = checkRet
+
 class Inotify:
     def __init__(self, period=1):
         self.inotify_fd = inotify_init()
@@ -62,12 +66,16 @@ class Inotify:
 
     def add_watch(self, path, recurse=False, mask = defaultMask):
         if not os.path.isdir(path):
-            return
+            return -1
         wd = inotify_add_watch(self.inotify_fd, path, mask)
         if recurse:
             for paths,dirs,files in os.walk(path):
                 self.add_watch(paths)
         self.wdList[path] = wd
+        return wd
+
+    def rm_wd(self, wd):
+        inotify_rm_watch(self.inotify_fd, wd)
 
     def rm_watch(self, path, fname):
         wd = self.wdList[path + "/" + fname]

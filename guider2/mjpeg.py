@@ -25,7 +25,6 @@ def StartStream(filename='evf.jpg'):
         }
     def getContents(filename):
         with open(filename, "rb") as f:
-            # for byte in f.read(1) while/if byte ?
             bsize=1024
             byte = f.read(bsize)
             while byte:
@@ -35,10 +34,12 @@ def StartStream(filename='evf.jpg'):
 
     def waitForFile():
         global inot
+        wd = inot.add_watch('/tmp/aguide/guider2', False)
         for event in inot.getEvents():
             if event:
                 (fullpath, masklist) = event
                 if 'IN_CLOSE_WRITE' in masklist and fullpath.endswith('.jpg'):
+                    inot.rm_wd(wd)
                     return fullpath
 
     class MjpegFactory(BaseHTTPRequestHandler):
@@ -72,6 +73,6 @@ def StartStream(filename='evf.jpg'):
     httpd.serve_forever()
 
 inot = Inotify()
-inot.add_watch('/tmp/aguide/guider2', False)
+#inot.add_watch('/tmp/aguide/guider2', False)
 
 StartStream()
