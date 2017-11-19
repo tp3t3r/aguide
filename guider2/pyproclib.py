@@ -11,7 +11,7 @@ class Proclib:
         self.lib =  ctypes.CDLL(so)
 
         self.init_image = self.lib.init_image
-        self.init_image.argtypes = [ ctypes.c_uint, ctypes.c_uint, self.buffer_type ]
+        self.init_image.argtypes = [ ctypes.c_uint, ctypes.c_uint, self.buffer_type,  ctypes.c_uint]
         self.init_image.restype = None
 
         self.get_spot_coordinates = self.lib.get_spot_coordinates
@@ -31,7 +31,8 @@ class Proclib:
         self.lock_spot.restype = None
 
     def initImage(self, data):
-        self.init_image(320,240, (ctypes.c_ubyte * self.resolution)(*data))
+        #fixed size and slice size
+        self.init_image(320,240, (ctypes.c_ubyte * self.resolution)(*data), 16)
 
     def getSpotCoordinates(self):
         x = ctypes.c_int()
