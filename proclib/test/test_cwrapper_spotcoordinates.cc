@@ -4,7 +4,7 @@
 #include "img_sample.h"
 
 int test_spotcoords() {
-    init_image(48,32,img_sample);
+    init_image(48,32,img_sample, 8);
     int x, y;
     get_spot_coordinates(&x, &y);
     if (x != 27 && y != 12) {

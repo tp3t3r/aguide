@@ -38,27 +38,25 @@ void ImageProcessor::getBrightestSlice(int *x_area, int *y_area, int *brightness
     memset(_slice_weights, 0, _slice_count*sizeof(_slice_count));
     int iy, ix;
     //calculate area
-    int maxpix = 0;
     for(iy = 0; iy<_height; iy++) {
         for(ix = 0; ix<_width; ix++) {
             int area_index = ix/_slice_size + (iy/_slice_size)*(_width/_slice_size);
             int pixel = *(_data+ix+iy*_width);
-            if (pixel > maxpix) {
-                maxpix = pixel;
-            }
             if (pixel > _threshold) {
                 _slice_weights[area_index]++;
             }
         }
     }
-    //printf("max value: %d\n", maxpix);
-
-    //finding max
+    //finding max - skip the edges (thickness: _slice_size)
     *x_area = -1;
     *y_area = -1;
     *brightness = -1;
     int brightest_idx = 0;
     for(int i=0; i < _slice_count; i++) {
+        int slice_per_line = _width / _slice_size;
+        if (i < slice_per_line) continue; // skip the first lines
+        if (i > _slice_count - slice_per_line) continue; //skip the last line
+        if ((i % slice_per_line == 0) || (i % slice_per_line == slice_per_line - 1)) continue; //skip the left and right sides
         if(_slice_weights[i] > *brightness) {
             *brightness = _slice_weights[i];
             brightest_idx = i;

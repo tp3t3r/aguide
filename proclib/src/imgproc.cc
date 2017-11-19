@@ -8,14 +8,12 @@ const char * get_lib_version() {
     return "imgproc 1.8";
 }
 
-void init_image(int width, int height, const char* data) {
+void init_image(int width, int height, const char* data, unsigned slice_size) {
     if (imp) {
         delete imp;
         imp = nullptr;
     }
-    unsigned slice = 16; // 16x16 segments
-
-    imp = new ImageProcessor(width, height, slice, data);
+    imp = new ImageProcessor(width, height, slice_size, data);
 }
 
 void get_spot_coordinates(int *x, int *y) {

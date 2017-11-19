@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
     
     imp.lockSpot(true);
 
-    tf.addLargerSpot(12,14);
+    tf.addLargerSpot(22,24);
     imp.addFrame(tf.getFrame());
     imp.getSpotCoordinates(&x2, &y2);
     

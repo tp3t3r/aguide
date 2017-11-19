@@ -12,8 +12,8 @@ int main(int argc, char** argv) {
     imp.getSpotCoordinates(&xstart, &ystart);
     
     int xnew,ynew;
-    int xoffset = 20;
-    int yoffset = 3;
+    int xoffset = 10;
+    int yoffset = 13;
     tf.shiftFrame(xoffset,yoffset);
     imp.addFrame(tf.getFrame());
     imp.getSpotCoordinates(&xnew, &ynew);
