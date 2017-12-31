@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-ImageProcessor::ImageProcessor(int width, int height, int slice_size, const unsigned char* data) {
+ImageProcessor::ImageProcessor(int width, int height, int slice_size, const t_pixel* data) {
 #ifndef PRODUCTION_BUILD
     _width = width;
     _height = height;
@@ -18,11 +18,11 @@ ImageProcessor::ImageProcessor(int width, int height, int slice_size, const unsi
     _slice_weights = new int[_slice_count];
     _locked = false;
      
-    _data = new unsigned char[_width * _height];
+    _data = new t_pixel[_width * _height];
     addFrame(data);
 }
 
-void ImageProcessor::addFrame(const unsigned char* data) {
+void ImageProcessor::addFrame(const t_pixel* data) {
     if (data) {
         memcpy(_data, data,  _width * _height);
     }
@@ -104,8 +104,8 @@ void ImageProcessor::getSpotCoordinates(int * x, int * y) {
     *y = sumy/brightness;
 }
 
-const unsigned char* ImageProcessor::getBuffer(void) {
-    return const_cast<const unsigned char*>(_data);
+const t_pixel* ImageProcessor::getBuffer(void) {
+    return const_cast<const t_pixel*>(_data);
 }
 
 ImageProcessor::~ImageProcessor() {
