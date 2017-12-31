@@ -5,7 +5,7 @@
 //global
 #define O 0x00
 #define X 0xFF
-const char sampleFrame[] = {
+const unsigned char sampleFrame[] = {
     O,O,O,O,O,O,O,O, O,O,O,O,O,O,O,O, O,O,O,O,O,O,O,O, O,O,O,O,O,O,O,O,
     O,O,O,O,O,O,O,O, O,O,O,O,O,O,O,O, O,O,O,O,O,O,O,O, O,O,O,O,O,O,O,O,
     O,O,O,O,O,O,O,O, O,O,O,O,O,O,O,O, O,O,O,O,O,O,O,O, O,O,O,O,O,O,O,O,
@@ -45,7 +45,7 @@ const char sampleFrame[] = {
 TestFrame::TestFrame() {
     _width = 32;
     _height = 32;
-    _data = new char[_width*_height];
+    _data = new unsigned char[_width*_height];
     memcpy(_data, sampleFrame, _width*_height);
 }
 
@@ -67,7 +67,7 @@ TestFrame::~TestFrame() {
 void TestFrame::shiftFrame(int xoffset, int yoffset) {
     //move x - every line
     int linesize = _width;
-    char * newline = new char[linesize];
+    unsigned char * newline = new unsigned char[linesize];
     if (0 < xoffset && xoffset < linesize) {
         for(int h=0; h < _height; h++) {
             memset(newline, 0, linesize);
@@ -98,6 +98,6 @@ void TestFrame::addLargerSpot(int x, int y) {
     }
 }
 
-const char * TestFrame::getFrame(void) {
-    return const_cast<const char*>(_data);
+const unsigned char * TestFrame::getFrame(void) {
+    return const_cast<const unsigned char*>(_data);
 }

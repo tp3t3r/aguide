@@ -8,7 +8,7 @@ const char * get_lib_version() {
     return "imgproc 1.8";
 }
 
-void init_image(int width, int height, const char* data, unsigned slice_size) {
+void init_image(int width, int height, const unsigned char* data, unsigned slice_size) {
     if (imp) {
         delete imp;
         imp = nullptr;
@@ -34,7 +34,7 @@ void set_threshold(int th) {
     }
 }
 
-const char* get_image_buffer(void) {
+const unsigned char* get_image_buffer(void) {
     if (imp) {
         return imp->getBuffer();
     }

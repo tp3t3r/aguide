@@ -5,11 +5,11 @@ class TestFrame {
         TestFrame();
         ~TestFrame();
         void shiftFrame(int x, int y);
-        const char * getFrame(void);
+        const unsigned char * getFrame(void);
         void addLargerSpot(int x, int y);
         void printFrame(void);
     private:
-        char *_data;
+        unsigned char *_data;
         int _width, _height;
 };
 
