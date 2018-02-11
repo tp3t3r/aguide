@@ -16,9 +16,10 @@ int main(int argc, char** argv) {
 
     imp.addFrame(img_sample3);
     
-    int x2;
-    int y2;
-    imp.getSpotCoordinates(&x2, &y2, 0);
+    int x2=x;
+    int y2=y;
+    //locked
+    imp.getSpotCoordinates(&x2, &y2, 1);
 
     int diffx = x2 - x;
     int diffy = y2 - y; 

@@ -10,10 +10,12 @@ int main(int argc, char** argv) {
     t_pixel * empty = new t_pixel[w*h];
     memset(empty, 0, w*h);
     ImageProcessor imp(w,h,16,empty);
-    int x,y,b;
-    imp.getBrightestSlice(&x,&y,&b);
-    printf("%d,%d,%d\n", x, y, b);
-    
-    imp.getSpotCoordinates(&x, &y);
+
+    int x, y;
+    imp.getSpotCoordinates(&x, &y, 0);
+    if (x != -1 || y != -1) {
+        TEST_RESULT("should be -1;-1\n");
+        return -1;
+    }
     return 0;
 }

@@ -16,15 +16,9 @@ void init_image(int width, int height, const t_pixel* data, unsigned slice_size)
     imp = new ImageProcessor(width, height, slice_size, data);
 }
 
-void get_spot_coordinates(int *x, int *y) {
+void get_spot_coordinates(int *x, int *y, int locked) {
     if (imp) {
-        imp->getSpotCoordinates(x, y);
-    }
-}
-
-void lock_spot(int l) {
-    if (imp) {
-        imp->lockSpot((bool)l);
+        imp->getSpotCoordinates(x, y, locked);
     }
 }
 
