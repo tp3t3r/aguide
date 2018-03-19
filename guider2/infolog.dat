@@ -1,6 +1,2 @@
-new state: notrunning
-dist: [-1:1]
-new state: notrunning
-new state: locked
-new state: tracking
-new state: notrunning
+REPLAYING
+state: notrunning

@@ -1,7 +1,8 @@
 import ctypes
 
 class Proclib:
-    def __init__(self, so='/usr/lib/libprod-imgproc.so'):
+    def __init__(self, so='/tmp/libprod-imgproc.so'):
+    #def __init__(self, so='/usr/lib/libprod-imgproc.so'):
 
         self.width = 320
         self.height = 240
@@ -26,10 +27,6 @@ class Proclib:
         self.get_image_buffer.argtypes = None
         self.get_image_buffer.restype = self.buffer_type
 
-        self.lock_spot = self.lib.lock_spot
-        self.lock_spot.argtypes = [ ctypes.c_int ]
-        self.lock_spot.restype = None
-
     def initImage(self, data):
         #fixed size and slice size
         self.init_image(320,240, (ctypes.c_ubyte * self.resolution)(*data), 16)
@@ -42,8 +39,4 @@ class Proclib:
 
     def setThreshold(self,th):
         self.set_threshold(th)
-
-    def lockSpot(self, val):
-        print "locking in pyproclib"
-        self.lock_spot(val)
 

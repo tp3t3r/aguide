@@ -23,6 +23,7 @@ signal.signal(signal.SIGTERM, shutdown)
 
 #globals
 capture=False
+capturedPattern = None
 OWN_IP='192.168.0.1'
 OWN_PORT=8000
 
@@ -68,13 +69,17 @@ cfsm = controlFSM()
 def imageProcessor():
     from framefactory import FrameFactory
     from frameprocessor import FrameProcessor
+    from framefactory import CapturedFactory
 
     infile = 'evf.png'
     evffile = 'evf_%02d.jpg'
 
-    global threshold,shutterspeed,cfsm,lock,infolog,capture
+    global threshold,shutterspeed,cfsm,lock,infolog,capture,capturedPattern
     try:
-        cam = FrameFactory()
+        if not capturedPattern:
+            cam = FrameFactory()
+        else:
+            cam = CapturedFactory(capturedPattern)
     except Exception as e:
         print "error", str(e)
         infolog.add("Camera not availble, reboot needed")
@@ -154,10 +159,16 @@ def startUI():
     server.serve_forever()
 
 if __name__ == "__main__":            
-    if len(sys.argv) == 2 and sys.argv[1] == '--capture':
-        capture=True
-        print "Capturing enabled"
-        infolog.add("CAPTURING ENABLED")
+    if len(sys.argv) == 2:
+        if sys.argv[1] == '--capture':
+            capture=True
+            print "Capturing enabled"
+            infolog.add("CAPTURING ENABLED")
+        if sys.argv[1] == '--replay':
+            capturedPattern = '/home/peter/capture/cap*.png'
+            print "replaying captured shots"
+            infolog.add("REPLAYING")
+                
     thread_ui = threading.Thread(target=startUI)
     thread_ch = threading.Thread(target=imageProcessor)
 
