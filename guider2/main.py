@@ -24,7 +24,6 @@ signal.signal(signal.SIGTERM, shutdown)
 #globals
 capture=False
 capturedPattern = None
-OWN_IP='192.168.0.1'
 OWN_PORT=8000
 
 
@@ -102,11 +101,12 @@ def imageProcessor():
         
         ss = cam.setShutterSpeed(shutterspeed)
         if ss: print "shutter speed set to: %d\n" % ss
+        locked = 0
         if cfsm.getState()[0] == 'locked' or cfsm.getState()[0] == 'running':
-            proc.lockSpot(True)
+            locked = 1
         else:
-            proc.lockSpot(False)
-        x,y = proc.getSpotCoordinates()
+            locked = 0
+        x,y = proc.getSpotCoordinates(locked)
         with lock:
             global spotx, spoty
             if spotx != x or spoty !=y:
@@ -125,6 +125,8 @@ def startUI():
     state,buttontext,enableTH = cfsm.getState()
     IndexPage(state, 'loading.png', buttontext)
 
+    global capturedPattern
+
     class extendedHandler(SimpleHTTPRequestHandler):
         def __init__(self, *args):
             SimpleHTTPRequestHandler.__init__(self, *args)
@@ -133,7 +135,7 @@ def startUI():
             pass
 
         def do_GET(self):
-            global cfsm,threshold,shutterspeed,infolog,OWN_IP,OWN_PORT
+            global cfsm,threshold,shutterspeed,infolog,OWN_PORT
             from urlparse import urlparse,parse_qs
             values = parse_qs(urlparse(self.path).query)
             path = urlparse(self.path).path
@@ -146,7 +148,10 @@ def startUI():
             if 'current_state' in values:
                 cfsm.shiftFromState(values['current_state'][0])
                 state,buttontext,enableTH = cfsm.getState()
-                IndexPage(state, 'http://192.168.0.1:5000', buttontext)
+                if not capturedPattern:
+                    IndexPage(state, 'http://192.168.0.1:5000', buttontext)
+                else:
+                    IndexPage(state, 'http://localhost:5000', buttontext)
 
             if path == "/config.html":
                 ConfigPage(threshold, shutterspeed)

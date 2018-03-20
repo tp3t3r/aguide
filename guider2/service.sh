@@ -15,7 +15,7 @@ set -e
 
 case "$1" in
   start)
-    cp -r /home/pi/aguide /tmp/
+    cp -r ~/aguide /tmp/
     cd /tmp/aguide/guider2
     ./mjpeg.py > /tmp/mjpeg-server.log &
     ./main.py $2 > /tmp/http-server.log

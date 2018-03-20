@@ -16,7 +16,7 @@ class Proclib:
         self.init_image.restype = None
 
         self.get_spot_coordinates = self.lib.get_spot_coordinates
-        self.get_spot_coordinates.argtypes = [ ctypes.c_void_p, ctypes.c_void_p ]
+        self.get_spot_coordinates.argtypes = [ ctypes.c_void_p, ctypes.c_void_p, ctypes.c_int ]
         self.get_spot_coordinates.restype = None
 
         self.set_threshold = self.lib.set_threshold
@@ -31,10 +31,10 @@ class Proclib:
         #fixed size and slice size
         self.init_image(320,240, (ctypes.c_ubyte * self.resolution)(*data), 16)
 
-    def getSpotCoordinates(self):
+    def getSpotCoordinates(self, locked):
         x = ctypes.c_int()
         y = ctypes.c_int()
-        self.get_spot_coordinates(ctypes.byref(x), ctypes.byref(y))
+        self.get_spot_coordinates(ctypes.byref(x), ctypes.byref(y), locked)
         return (x.value,y.value)
 
     def setThreshold(self,th):

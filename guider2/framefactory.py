@@ -38,7 +38,6 @@ class CapturedFactory():
         self.filelist = glob.glob(filepattern)
         self.index = 0
 
-
     def setShutterSpeed(self, value):
         pass
 
@@ -49,4 +48,4 @@ class CapturedFactory():
             print "nextfile:", nextfile
             shutil.copyfile(nextfile, pngfile)
             self.index += 1
-        time.sleep(0.1)
+        time.sleep(0.8)

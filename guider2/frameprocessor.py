@@ -28,11 +28,11 @@ class FrameProcessor():
             jpg_overlay.rectangle( ((x-size, y-size), (x+size,y+size)), None, outline = color)
         jpg.save(self.outputfile, quality=99)
 
-    def getSpotCoordinates(self):
+    def getSpotCoordinates(self, locked):
         #luminance data for processing
         imgdata = list(self.img.convert('L').getdata())
         self.proclib.initImage(imgdata)
         self.proclib.setThreshold(self.threshold)
-        x,y = self.proclib.getSpotCoordinates()
+        x,y = self.proclib.getSpotCoordinates(locked)
         self.addRectangle(x,y)
         return x,y
