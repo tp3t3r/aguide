@@ -148,10 +148,7 @@ def startUI():
             if 'current_state' in values:
                 cfsm.shiftFromState(values['current_state'][0])
                 state,buttontext,enableTH = cfsm.getState()
-                if not capturedPattern:
-                    IndexPage(state, 'http://192.168.0.1:5000', buttontext)
-                else:
-                    IndexPage(state, 'http://localhost:5000', buttontext)
+                IndexPage(state, 'http://0.0.0.0:5000', buttontext)
 
             if path == "/config.html":
                 ConfigPage(threshold, shutterspeed)
