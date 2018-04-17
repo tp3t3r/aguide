@@ -161,13 +161,17 @@ def startUI():
     server.serve_forever()
 
 if __name__ == "__main__":            
-    if len(sys.argv) == 2:
+    if len(sys.argv) >= 2:
         if sys.argv[1] == '--capture':
             capture=True
             print "Capturing enabled"
             infolog.add("CAPTURING ENABLED")
         if sys.argv[1] == '--replay':
-            capturedPattern = '/home/peter/capture/cap*.png'
+            try:
+                capturedPattern = sys.argv[2]
+            except:
+                print "file pattern has to be specified"
+                sys.exit(1)
             print "replaying captured shots"
             infolog.add("REPLAYING")
                 

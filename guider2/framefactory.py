@@ -35,7 +35,9 @@ class FrameFactory():
 class CapturedFactory():
     def __init__(self, filepattern):
         self.filepattern = filepattern
+        print "file pattern: ", self.filepattern
         self.filelist = sorted(glob.glob(filepattern))
+        print "list: ", str(self.filelist)
         self.index = 0
 
     def setShutterSpeed(self, value):

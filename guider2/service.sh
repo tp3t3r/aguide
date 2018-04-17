@@ -18,7 +18,7 @@ case "$1" in
     cp -r ~/aguide /tmp/
     cd /tmp/aguide/guider2
     ./mjpeg.py > /tmp/mjpeg-server.log &
-    ./main.py $2 > /tmp/http-server.log
+    ./main.py $2 $3> /tmp/http-server.log
 	;;
   stop)
     rm -rf /tmp/aguide
