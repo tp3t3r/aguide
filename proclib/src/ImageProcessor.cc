@@ -85,10 +85,10 @@ void ImageProcessor::getSpotCoordinates(int * x, int * y, int locked) {
     int x_offset = 0;
     int y_offset = 0;
     if (locked == 0) {
-        printf("x");
+        //printf("x");
         
         getBrightestSlice(&x_area, &y_area);
-        printf("%d:%d",x_area, y_area);
+        //printf("%d:%d",x_area, y_area);
         //is there any?
         if ( x_area < 0 || y_area < 0 ) {
             printf("no bright spot");
@@ -116,16 +116,16 @@ void ImageProcessor::getSpotCoordinates(int * x, int * y, int locked) {
     for(iy=y_offset-_slice_size; iy < y_offset + _slice_size; iy++) {
         for(ix=x_offset-_slice_size; ix < x_offset + _slice_size; ix++) {
             int pixel = *(_data+ix+iy*_width);
-            printf("%03d ", pixel);
+            //printf("%03d ", pixel);
             if(pixel > _threshold) {
                 sumx += ix;
                 sumy += iy;
                 brightness++;
             }
         }
-        printf("\n");
+        //printf("\n");
     }
-    printf("spot: %d:%d [%d]\n", sumx/brightness, sumy/brightness, brightness);
+    //printf("spot: %d:%d [%d]\n", sumx/brightness, sumy/brightness, brightness);
     *x = sumx/brightness;
     *y = sumy/brightness;
 }

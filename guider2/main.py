@@ -23,7 +23,7 @@ signal.signal(signal.SIGTERM, shutdown)
 
 #globals
 capture=False
-capturedPattern = None
+captureLocation = None
 OWN_PORT=8000
 
 
@@ -66,6 +66,7 @@ class controlFSM:
 cfsm = controlFSM()
 
 def imageProcessor():
+    print "starting image processing..."
     from framefactory import FrameFactory
     from frameprocessor import FrameProcessor
     from framefactory import CapturedFactory
@@ -73,12 +74,14 @@ def imageProcessor():
     infile = 'evf.png'
     evffile = 'evf_%02d.jpg'
 
-    global threshold,shutterspeed,cfsm,lock,infolog,capture,capturedPattern
+    global threshold,shutterspeed,cfsm,lock,infolog,capture,captureLocation
     try:
-        if not capturedPattern:
+        if not captureLocation:
+            print "using camera as image source"
             cam = FrameFactory()
         else:
-            cam = CapturedFactory(capturedPattern)
+            print "using pre-captured image sequence"
+            cam = CapturedFactory(captureLocation)
     except Exception as e:
         print "error", str(e)
         infolog.add("Camera not availble, reboot needed")
@@ -107,6 +110,7 @@ def imageProcessor():
         else:
             locked = 0
         x,y = proc.getSpotCoordinates(locked)
+        infolog.add("pos: ",x,y)
         with lock:
             global spotx, spoty
             if spotx != x or spoty !=y:
@@ -117,6 +121,7 @@ def imageProcessor():
             spoty = y
 
 def startUI():
+    print "starting webservice..."
     from SimpleHTTPServer import SimpleHTTPRequestHandler
     from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
     from indexpage import IndexPage,ConfigPage
@@ -125,7 +130,7 @@ def startUI():
     state,buttontext,enableTH = cfsm.getState()
     IndexPage(state, 'loading.png', buttontext)
 
-    global capturedPattern
+    global captureLocation
 
     class extendedHandler(SimpleHTTPRequestHandler):
         def __init__(self, *args):
@@ -161,20 +166,23 @@ def startUI():
     server.serve_forever()
 
 if __name__ == "__main__":            
+    print "starting up buksiguider9000"
     if len(sys.argv) >= 2:
+        print "entering TEST MODE"
         if sys.argv[1] == '--capture':
             capture=True
             print "Capturing enabled"
             infolog.add("CAPTURING ENABLED")
         if sys.argv[1] == '--replay':
             try:
-                capturedPattern = sys.argv[2]
+                captureLocation = sys.argv[2]
             except:
                 print "file pattern has to be specified"
                 sys.exit(1)
             print "replaying captured shots"
             infolog.add("REPLAYING")
-                
+    else:
+        print "TEST MODE disabled"
     thread_ui = threading.Thread(target=startUI)
     thread_ch = threading.Thread(target=imageProcessor)
 
@@ -184,7 +192,7 @@ if __name__ == "__main__":
         state,buttontext,enableTH = cfsm.getState()
         if state != 'waitforcam':
             pass
-        time.sleep(2)
+        time.sleep(1)
 
     #exiting
     thread_ui.join()

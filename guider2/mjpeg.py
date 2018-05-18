@@ -8,6 +8,7 @@ from inotify import Inotify
 from inotify import EventMask
 
 def StartStream(filename='evf.jpg'):
+    print 'starting mjpeg server...'
     boundary = '--msgboundary'
     def request_headers():
         return {
@@ -34,7 +35,7 @@ def StartStream(filename='evf.jpg'):
 
     def waitForFile():
         global inot
-        wd = inot.add_watch('/tmp/aguide/guider2', False)
+        wd = inot.add_watch('/tmp/guider2/', False)
         for event in inot.getEvents():
             if event:
                 (fullpath, masklist) = event
@@ -54,7 +55,7 @@ def StartStream(filename='evf.jpg'):
                 self.end_headers()
                 self.wfile.write(boundary)
                 self.end_headers()
-                #print "wait"
+                print "wait"
                 path = waitForFile()
                 print "got: ", path
                 # Part headers
@@ -72,7 +73,6 @@ def StartStream(filename='evf.jpg'):
     httpd = HTTPServer(('', 5000), MjpegFactory)
     httpd.serve_forever()
 
-inot = Inotify()
-#inot.add_watch('/tmp/aguide/guider2', False)
 
+inot = Inotify()
 StartStream()

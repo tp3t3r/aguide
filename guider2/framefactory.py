@@ -33,11 +33,11 @@ class FrameFactory():
 
 
 class CapturedFactory():
-    def __init__(self, filepattern):
-        self.filepattern = filepattern
-        print "file pattern: ", self.filepattern
-        self.filelist = sorted(glob.glob(filepattern))
-        print "list: ", str(self.filelist)
+    def __init__(self, filelocation):
+        self.filelocation = filelocation
+        print "file location: ", self.filelocation
+        self.filelist = sorted(glob.glob(filelocation + '/*.png'))
+        print "found: %d files\n" % len(self.filelist)
         self.index = 0
 
     def setShutterSpeed(self, value):
@@ -47,7 +47,7 @@ class CapturedFactory():
         nextfile = None
         if self.filelist:
             nextfile = self.filelist[self.index % len(self.filelist)]
-            print "nextfile:", nextfile
+            print nextfile, "->", pngfile
             shutil.copyfile(nextfile, pngfile)
             self.index += 1
-        time.sleep(0.8)
+        time.sleep(0.5)

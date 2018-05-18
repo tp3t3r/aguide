@@ -15,13 +15,13 @@ set -e
 
 case "$1" in
   start)
-    cp -r ~/aguide /tmp/
-    cd /tmp/aguide/guider2
+    cp -r ~/aguide/guider2 /tmp/
+    cd /tmp/guider2
     ./mjpeg.py > /tmp/mjpeg-server.log &
-    ./main.py $2 $3> /tmp/http-server.log
+    ./main.py $2 $3 > /tmp/http-server.log &
 	;;
   stop)
-    rm -rf /tmp/aguide
+    rm -rf /tmp/guider2
     killall python
 	;;
 
