@@ -12,10 +12,6 @@ class FrameProcessor():
     def setThreshold(self, value):
         self.threshold = value
 
-    def lockSpot(self, value):
-        print "+++ locking: ", value
-        self.proclib.lockSpot(value)
-
     def addRectangle(self, x, y):
         size = 5
         color = "green"

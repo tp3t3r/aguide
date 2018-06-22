@@ -90,7 +90,6 @@ def imageProcessor():
     counter = 0
     jpegcount = 0
     while Running:
-        #print "capturing @", time.time()
         cam.capture(infile)
         if capture:
             #saving input
@@ -109,8 +108,9 @@ def imageProcessor():
             locked = 1
         else:
             locked = 0
+        #TODO: add coordinates to function call
         x,y = proc.getSpotCoordinates(locked)
-        infolog.add("pos: ",x,y)
+        infolog.add("pos: %d: %d" % (x,y))
         with lock:
             global spotx, spoty
             if spotx != x or spoty !=y:
@@ -179,7 +179,7 @@ if __name__ == "__main__":
             except:
                 print "file pattern has to be specified"
                 sys.exit(1)
-            print "replaying captured shots"
+            print "replaying captured shots from: ", captureLocation
             infolog.add("REPLAYING")
     else:
         print "TEST MODE disabled"
