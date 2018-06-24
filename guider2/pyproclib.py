@@ -31,11 +31,11 @@ class Proclib:
         #fixed size and slice size
         self.init_image(320,240, (ctypes.c_ubyte * self.resolution)(*data), 16)
 
-    def getSpotCoordinates(self, locked):
-        x = ctypes.c_int()
-        y = ctypes.c_int()
-        self.get_spot_coordinates(ctypes.byref(x), ctypes.byref(y), locked)
-        return (x.value,y.value)
+    def getSpotCoordinates(self, locked, x, y):
+        cx = ctypes.c_int(x)
+        cy = ctypes.c_int(y)
+        self.get_spot_coordinates(ctypes.byref(cx), ctypes.byref(cy), locked)
+        return (cx.value,cy.value)
 
     def setThreshold(self,th):
         self.set_threshold(th)

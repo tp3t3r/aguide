@@ -28,7 +28,7 @@ OWN_PORT=8000
 
 
 lock = threading.RLock()
-spotx = 1
+spotx = -1
 spoty = -1
 Running = True
 server = None
@@ -108,15 +108,14 @@ def imageProcessor():
             locked = 1
         else:
             locked = 0
-        #TODO: add coordinates to function call
-        x,y = proc.getSpotCoordinates(locked)
-        infolog.add("pos: %d: %d" % (x,y))
+        global spotx,spoty
+        x,y = proc.getSpotCoordinates(locked, spotx, spoty)
+        #infolog.add("pos: %d: %d" % (x,y))
         with lock:
-            global spotx, spoty
             if spotx != x or spoty !=y:
                 #moved away...
                 if cfsm.getState()[0] == 'locked' or cfsm.getState()[0] == 'running':
-                    infolog.add('delta: [%d:%d]' % (x-spotx, y-spoty))
+                    infolog.add('move offset: [%d:%d]' % (x-spotx, y-spoty))
             spotx = x
             spoty = y
 
