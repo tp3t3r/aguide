@@ -5,6 +5,7 @@ import time
 import signal
 import sys
 import shutil
+import socket
 
 from infolog import InfoLog
 
@@ -152,7 +153,8 @@ def startUI():
             if 'current_state' in values:
                 cfsm.shiftFromState(values['current_state'][0])
                 state,buttontext,enableTH = cfsm.getState()
-                IndexPage(state, 'http://0.0.0.0:5000', buttontext)
+                ip_addr = socket.gethostbyname(socket.gethostname())
+                IndexPage(state, 'http://' + str(ip_addr) + ':5000', buttontext)
 
             if path == "/config.html":
                 ConfigPage(threshold, shutterspeed)
