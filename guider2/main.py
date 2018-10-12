@@ -71,6 +71,7 @@ def imageProcessor():
     from framefactory import FrameFactory
     from frameprocessor import FrameProcessor
     from framefactory import CapturedFactory
+    from stepperdriver import StepperDriver
 
     infile = 'evf.png'
     evffile = 'evf_%02d.jpg'
@@ -90,35 +91,42 @@ def imageProcessor():
     cfsm.shiftFromState('waitforcam')
     counter = 0
     jpegcount = 0
-    while Running:
-        cam.capture(infile)
-        if capture:
-            #saving input
-            shutil.copyfile(infile, '/tmp/cap_%04d.png' % counter) 
-            counter += 1
-        proc = FrameProcessor(infile, evffile % (jpegcount % 10), threshold)
-        jpegcount += 1
 
-        #config settings
-        proc.setThreshold(threshold)
-        
-        ss = cam.setShutterSpeed(shutterspeed)
-        if ss: print "shutter speed set to: %d\n" % ss
-        locked = 0
-        if cfsm.getState()[0] == 'locked' or cfsm.getState()[0] == 'running':
-            locked = 1
-        else:
+    with StepperDriver() as stepper:
+        while Running:
+            cam.capture(infile)
+            if capture:
+                #saving input
+                shutil.copyfile(infile, '/tmp/cap_%04d.png' % counter) 
+                counter += 1
+            proc = FrameProcessor(infile, evffile % (jpegcount % 10), threshold)
+            jpegcount += 1
+
+            #config settings
+            proc.setThreshold(threshold)
+            
+            ss = cam.setShutterSpeed(shutterspeed)
+            if ss: print "shutter speed set to: %d\n" % ss
             locked = 0
-        global spotx,spoty
-        x,y = proc.getSpotCoordinates(locked, spotx, spoty)
-        #infolog.add("pos: %d: %d" % (x,y))
-        with lock:
-            if spotx != x or spoty !=y:
-                #moved away...
-                if cfsm.getState()[0] == 'locked' or cfsm.getState()[0] == 'running':
-                    infolog.add('move offset: [%d:%d]' % (x-spotx, y-spoty))
-            spotx = x
-            spoty = y
+            if cfsm.getState()[0] == 'locked' or cfsm.getState()[0] == 'running':
+                locked = 1
+            else:
+                locked = 0
+            global spotx,spoty
+            x,y = proc.getSpotCoordinates(locked, spotx, spoty)
+            #infolog.add("pos: %d: %d" % (x,y))
+            with lock:
+                if spotx != x or spoty !=y:
+                    #moved away...
+                    if cfsm.getState()[0] == 'locked' or cfsm.getState()[0] == 'running':
+                        diffx = x - spotx
+                        diffy = y - spoty
+                        infolog.add('move offset: [%d:%d]' % (diffx, diffy))
+                        if diffix > 0:
+                            #actual movement
+                            stepper.doStep(diffx)
+                spotx = x
+                spoty = y
 
 def startUI():
     print "starting webservice..."
