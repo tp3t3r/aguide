@@ -6,7 +6,21 @@ import time, threading, sys
 used_pins=[17,18,27,22]
 
 #stepper motor wiring:
+#out
 #L298 header VCC/NC A/RED B/GREEN C/BLUE D/BLACK
+
+#in
+#INA/PUPRLE INB/BLUE INC/GREEN IND/YELLOW
+
+#common
+#G on raspi is connected to driver's common
+
+# on raspi:
+# 2  4  6  8 10 12 14 16 18 20 22 24 26 18 30 32 34 36 38 40
+|  |  |G |  |  |P |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+=============================================================
+|  |  |  |  |  |B |Y |G |  |  |  |  |  |  |  |  |  |  |  |  |
+
 
 #GPIO related
 def configure():
@@ -54,7 +68,7 @@ try:
     def doStep(step):
         print step
         setValue(step[0], step[1], step[2], step[3])
-        time.sleep(.01)
+        time.sleep(.1)
 
     nos = int(sys.argv[1])
     configure()
@@ -72,6 +86,9 @@ try:
 
 except KeyboardInterrupt:
     print "exiting"
+except IndexError:
+    print "step count has to be provided"
+    sys.exit(1)
 finally:
     #GPIO cleanup
     cleanup()
