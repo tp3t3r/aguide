@@ -1,6 +1,9 @@
 import time
 import RPi.GPIO as GPIO ## Import GPIO library
 
+#type
+# 17hd34008-22b
+
 #stepper motor wiring:
 #out
 #L298 header VCC/NC A/RED B/GREEN C/BLUE D/BLACK
