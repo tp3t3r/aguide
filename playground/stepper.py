@@ -3,7 +3,7 @@
 import RPi.GPIO as GPIO ## Import GPIO library
 import time, threading, sys
 
-used_pins=[17,18,27,22]
+used_pins=[12,16,20,21]
 
 #stepper motor wiring:
 #out
@@ -32,22 +32,22 @@ def configure():
 
 def setValue(p1,p2,p3,p4):
     if p1:
-        GPIO.output(17, GPIO.HIGH)
+        GPIO.output(12, GPIO.HIGH)
     else:
-        GPIO.output(17, GPIO.LOW)
+        GPIO.output(12, GPIO.LOW)
     if p2:
-        GPIO.output(18, GPIO.HIGH)
+        GPIO.output(16, GPIO.HIGH)
     else:
-        GPIO.output(18, GPIO.LOW)
+        GPIO.output(16, GPIO.LOW)
 
     if p3:
-        GPIO.output(27, GPIO.HIGH)
+        GPIO.output(20, GPIO.HIGH)
     else:
-        GPIO.output(27, GPIO.LOW)
+        GPIO.output(20, GPIO.LOW)
     if p4:
-        GPIO.output(22, GPIO.HIGH)
+        GPIO.output(21, GPIO.HIGH)
     else:
-        GPIO.output(22, GPIO.LOW)
+        GPIO.output(21, GPIO.LOW)
 
 
 def cleanup():
@@ -68,7 +68,7 @@ try:
     def doStep(step):
         print step
         setValue(step[0], step[1], step[2], step[3])
-        time.sleep(.1)
+        time.sleep(2)
 
     nos = int(sys.argv[1])
     configure()
