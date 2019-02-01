@@ -122,7 +122,7 @@ def imageProcessor():
                         diffx = x - spotx
                         diffy = y - spoty
                         infolog.add('move offset: [%d:%d]' % (diffx, diffy))
-                        if diffix > 0:
+                        if diffx > 0:
                             #actual movement
                             stepper.doStep(diffx)
                 spotx = x
