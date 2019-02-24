@@ -23,7 +23,7 @@ class StepperDriver():
         self.delay = 0.1
 
     def __enter__(self):
-        pass
+        return self
 
     def __exit__(self, *args):
         for pin in self.used_pins:
