@@ -15,7 +15,15 @@ import RPi.GPIO as GPIO ## Import GPIO library
 
 class StepperDriver():
     def __init__(self):
-        GPIO.setmode(GPIO.BCM) ## Use board pin numbering
+        GPIO.setmode(GPIO.BCM) ## Use board pin numberinga
+
+        # full steps
+        self.step_control_pins = [16,20,21]
+        for pin in self.step_control_pins:
+            GPIO.setup(pin, GPIO.OUT)
+            GPIO.output(pin, GPIO.LOW)
+
+        # direction and step
         self.used_pins = [14, 15]
         for pin in self.used_pins:
             GPIO.setup(pin, GPIO.OUT)
@@ -26,7 +34,7 @@ class StepperDriver():
         return self
 
     def __exit__(self, *args):
-        for pin in self.used_pins:
+        for pin in self.used_pins + self.step_control_pins:
             GPIO.output(pin, GPIO.LOW)
         GPIO.cleanup()
 
@@ -45,10 +53,10 @@ class StepperDriver():
 
     def setPins(self, p_dir, p_step):
         if p_dir:
-            GPIO.output(14, GPIO.HIGH)
-        else:
-            GPIO.output(14, GPIO.LOW)
-        if p_step:
             GPIO.output(15, GPIO.HIGH)
         else:
             GPIO.output(15, GPIO.LOW)
+        if p_step:
+            GPIO.output(14, GPIO.HIGH)
+        else:
+            GPIO.output(14, GPIO.LOW)
