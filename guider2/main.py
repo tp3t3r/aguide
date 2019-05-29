@@ -71,7 +71,7 @@ def imageProcessor():
     from framefactory import FrameFactory
     from frameprocessor import FrameProcessor
     from framefactory import CapturedFactory
-    from stepperdriver import StepperDriver
+    from nativestepperdriver import NativeStepperDriver
 
     infile = 'evf.png'
     evffile = 'evf_%02d.jpg'
@@ -92,7 +92,7 @@ def imageProcessor():
     counter = 0
     jpegcount = 0
 
-    with StepperDriver() as stepper:
+    with NativeStepperDriver() as stepper:
         while Running:
             cam.capture(infile)
             if capture:

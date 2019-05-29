@@ -15,8 +15,8 @@ import RPi.GPIO as GPIO ## Import GPIO library
 #G on raspi is connected to driver's common
 
 # on raspi:
-# 2  4  6  8 10 12 14 16 18 20 22 24 26 18 30 32 34 36 38 40
-#|  |+5|GN|  |  |P |  |  |  |  |  |  |  |  |  |Y |  |G |B |P |
+# 2  4  6  8  10 12 14 16 18 20 22 24 26 18 30 32 34 36 38 40
+#|  |+5|GN|  |  |  |  |  |  |  |  |  |  |  |  |Y |  |G |B |P |
 #=============================================================
 #|  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 
@@ -32,7 +32,7 @@ class NativeStepperDriver():
             GPIO.output(pin, GPIO.LOW)
 
     def __enter__(self):
-        pass
+        return self
 
     def __exit__(self, *args):
         for pin in self.used_pins:
