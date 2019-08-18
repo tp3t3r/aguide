@@ -125,6 +125,13 @@ void ImageProcessor::getSpotCoordinates(int * x, int * y, int locked) {
         }
         //printf("\n");
     }
+    
+    //check if spot is lost
+    if (brightness == 0) {
+        *x = -1;
+        *y = -1;
+        return;
+    } 
     //printf("spot: %d:%d [%d]\n", sumx/brightness, sumy/brightness, brightness);
     *x = sumx/brightness;
     *y = sumy/brightness;

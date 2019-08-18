@@ -114,7 +114,11 @@ def imageProcessor():
                 locked = 0
             global spotx,spoty
             x,y = proc.getSpotCoordinates(locked, spotx, spoty)
-            #infolog.add("pos: %d: %d" % (x,y))
+            if x == -1 and y == -1:
+                locked = 0
+                infolog.add("spot is lost, unlocked.")
+                cfsm.shiftFromState('tracking')
+                continue
             with lock:
                 if spotx != x or spoty !=y:
                     #moved away...
@@ -206,5 +210,3 @@ if __name__ == "__main__":
     #exiting
     thread_ui.join()
     thread_ch.join()
-
-
