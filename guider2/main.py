@@ -91,6 +91,7 @@ def imageProcessor():
     cfsm.shiftFromState('waitforcam')
     counter = 0
     jpegcount = 0
+    locked = 0
 
     with NativeStepperDriver() as stepper:
         while Running:
@@ -104,33 +105,31 @@ def imageProcessor():
 
             #config settings
             proc.setThreshold(threshold)
-            
             ss = cam.setShutterSpeed(shutterspeed)
-            if ss: print "shutter speed set to: %d\n" % ss
-            locked = 0
-            if cfsm.getState()[0] == 'locked' or cfsm.getState()[0] == 'running':
+            if ss: infolog.add("shutter speed set to: %d\n" % ss)
+
+            if cfsm.getState()[0] == 'locked' or cfsm.getState()[0] == 'tracking':
                 locked = 1
             else:
                 locked = 0
             global spotx,spoty
             x,y = proc.getSpotCoordinates(locked, spotx, spoty)
-            if x == -1 and y == -1:
+            if x == -1 and y == -1 and locked:
                 locked = 0
                 infolog.add("spot is lost, unlocked.")
                 cfsm.shiftFromState('tracking')
                 continue
             with lock:
-                if spotx != x or spoty !=y:
+                if spotx != x or spoty !=y and locked:
                     #moved away...
-                    if cfsm.getState()[0] == 'locked' or cfsm.getState()[0] == 'running':
-                        diffx = x - spotx
-                        diffy = y - spoty
-                        infolog.add('move offset: [%d:%d]' % (diffx, diffy))
-                        if diffx > 0:
-                            #actual movement
-                            stepper.doStep(diffx)
-                spotx = x
-                spoty = y
+                    diffx = x - spotx
+                    diffy = y - spoty
+                    infolog.add('move offset: [%d:%d]' % (diffx, diffy))
+                    if diffx > 0:
+                        #actual movement
+                        stepper.doStep(diffx)
+            spotx = x
+            spoty = y
 
 def startUI():
     print "starting webservice..."
