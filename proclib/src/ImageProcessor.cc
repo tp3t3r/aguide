@@ -91,7 +91,7 @@ void ImageProcessor::getSpotCoordinates(int * x, int * y, int locked) {
         //printf("%d:%d",x_area, y_area);
         //is there any?
         if ( x_area < 0 || y_area < 0 ) {
-            printf("no bright spot");
+            //printf("no bright spot");
             *x = -1;
             *y = -1;
             return;
