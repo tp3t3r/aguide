@@ -120,7 +120,7 @@ def imageProcessor():
                 cfsm.shiftFromState('tracking')
                 continue
             with lock:
-                if spotx != x or spoty !=y and locked:
+                if spotx != x or spoty !=y and cfsm.getState()[0] == 'tracking':
                     #moved away...
                     diffx = x - spotx
                     diffy = y - spoty
