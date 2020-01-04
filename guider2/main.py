@@ -71,7 +71,8 @@ def imageProcessor():
     from framefactory import FrameFactory
     from frameprocessor import FrameProcessor
     from framefactory import CapturedFactory
-    from nativestepperdriver import NativeStepperDriver
+    import stepperdriver
+
 
     infile = 'evf.png'
     evffile = 'evf_%02d.jpg'
@@ -81,9 +82,11 @@ def imageProcessor():
         if not captureLocation:
             print "using camera as image source"
             cam = FrameFactory()
+            Stepper = stepperdriver.NativeStepperDriver
         else:
             print "using pre-captured image sequence"
             cam = CapturedFactory(captureLocation)
+            Stepper = stepperdriver.DriverConnector
     except Exception as e:
         print "error", str(e)
         infolog.add("Camera not availble, reboot needed")
@@ -93,7 +96,7 @@ def imageProcessor():
     jpegcount = 0
     locked = 0
 
-    with NativeStepperDriver() as stepper:
+    with Stepper() as stepper:
         while Running:
             cam.capture(infile)
             if capture:

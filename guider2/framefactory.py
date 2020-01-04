@@ -50,4 +50,4 @@ class CapturedFactory():
             print nextfile, "->", pngfile
             shutil.copyfile(nextfile, pngfile)
             self.index += 1
-        time.sleep(0.01)
+        time.sleep(0.3)
