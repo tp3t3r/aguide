@@ -2,6 +2,8 @@
 import argparse
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 
+from content import skeleton
+
 
 class S(BaseHTTPRequestHandler):
     def _set_headers(self):
@@ -13,24 +15,7 @@ class S(BaseHTTPRequestHandler):
         pass
 
     def mainPage(self):
-        """This just generates an HTML document that includes `message`
-        in the body. Override, or re-write this do do more interesting stuff.
-        """
-        content = """
-        <html>
-        <body>
-        <p>form:</p>
-        <form action="input.form" method="post">
-        <label for="value1">Value1</label>
-        <input type="text" id="value1" name="nvalue1"><br>
-        <label for="value2">Value2</label>
-        <input type="text" id="value2" name="nvalue2"><br>
-        <input type="submit" value="Send">
-        </form>
-        </body>
-        </html>
-        """
-        return content.encode("utf8")  # NOTE: must return a bytes object!
+        return skeleton.encode("utf8")  # NOTE: must return a bytes object!
 
     def do_GET(self):
         print self.headers
