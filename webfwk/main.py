@@ -6,13 +6,26 @@ import mimetypes
 
 from content import skeleton
 
+class FSM():
+    def __init__(self):
+        self.states = [{'buttontext':'to state1', 'content':'content for state0'},
+                       {'buttontext':'to state2', 'content':'content for state1'},
+                       {'buttontext':'to state3', 'content':'content for state2'},
+                       {'buttontext':'to state0', 'content':'content for state2'}]
+        self.currState = 0
+
+    def getState(self):
+        return self.states[self.currState]
+
+    def nextState(self):
+        self.currState = (self.currState + 1) % len(self.states)
 
 class ReqHandler(BaseHTTPRequestHandler):
     def log_message(self, *args):
         pass
 
     def mainPage(self):
-        return skeleton.encode("utf8")  # NOTE: must return a bytes object!
+        return skeleton.format(**myFSM.getState()).encode("utf8")  # NOTE: must return a bytes object!
 
     def __serveFile(self, filename):
         try:
@@ -56,5 +69,6 @@ class ReqHandler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
+    myFSM = FSM()
     httpd = HTTPServer(("localhost", 8000), ReqHandler)
     httpd.serve_forever()
