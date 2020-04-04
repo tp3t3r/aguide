@@ -1,10 +1,14 @@
+function renderState(state) {
+    // TODO switch-case
+}
 function pollServer() {
     var Httpreq = new XMLHttpRequest();
-    Httpreq.open("GET",'status',false);
+    Httpreq.open("GET","/status",false);
     Httpreq.send(null);
     if (Httpreq.status == 200) {
         var response = Httpreq.responseText;
-        // document.getElementById('status').innerHTML = response + "\\n";
+        //document.getElementById('debug').innerHTML = response;
+        if response
     }
 }
-window.setInterval(pollServer, 2000);
+window.setInterval(pollServer, 1000);

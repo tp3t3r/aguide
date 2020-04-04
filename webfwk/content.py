@@ -1,11 +1,11 @@
 skeleton="""
 <html>
-<head><script src="client.js"></script></head>
+<head>
+    <script src="client.js"></script>
+    <link rel="stylesheet" type="text/css" href="main.css">
+</head>
 <div id='content'>{content}</div>
-<div id='status'></div>
-<form action="/fsm" method="POST">
-    <input type="text" id="hiddentext" name="hiddenkey">
-    <input type="submit" value="{buttontext}">
-</form>
+<hr>
+<div id='debug'></div>
 </html>
 """
