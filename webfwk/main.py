@@ -4,8 +4,6 @@ from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 import time, os
 import mimetypes
 
-from content import skeleton
-
 class CtxHandler():
     def __init__(self):
         self.reqCounter = 0
@@ -21,7 +19,8 @@ class ReqHandler(BaseHTTPRequestHandler):
         pass
 
     def mainPage(self):
-        return skeleton.format(content="html content comes here").encode("utf8")  # NOTE: must return a bytes object!
+        with open("templates/main.html.template", "r") as main:
+            return main.read().format().encode("utf8")
 
     def __serveFile(self, filename):
         try:
@@ -33,8 +32,6 @@ class ReqHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         ctx.reqCounter = ctx.reqCounter + 1
-        print("ctx.reqCounter", ctx.reqCounter)
-        # index page
         if self.path == "/":
             self.send_response(200)
             self.send_header("Content-type", "text/html")
@@ -46,7 +43,7 @@ class ReqHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
-            self.wfile.write(("status counter: %s" % ctx.reqCounter).encode("utf8"))
+            self.wfile.write(str(ctx.reqCounter).encode("utf8"))
             return
         # file contents
         if os.path.isfile("." + self.path):
