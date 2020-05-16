@@ -32,6 +32,7 @@ class ReqHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         ctx.reqCounter = ctx.reqCounter + 1
+        self.path = self.path.split("?")[0]
         if self.path == "/":
             self.send_response(200)
             self.send_header("Content-type", "text/html")

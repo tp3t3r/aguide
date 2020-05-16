@@ -1,0 +1,45 @@
+body {
+    background-color: #333333;
+}
+
+
+
+.button {
+    font-size: 20px;
+    text-align: center;
+    padding: 5px 5px;
+    width:40%;
+    margin:10px;
+    background-color: #ff9900;
+    border: none;
+}
+
+.top_container {
+    width: 100%;
+    text-align:center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.title {
+    font-size: 35px;
+    text-align: center;
+    padding: 5px 5px;
+    font-family: "Arial", "Verdana";
+    color: #ff9900;
+}
+
+.infolog {
+    width: 100%;
+    height: 100px;
+    margin-top: 10px;
+    resize: none;
+    font-family: "Courier", "Monospace";
+}
+
+.config {
+    font-family: "Arial", "Verdana";
+    font-size: 1.5em;
+    color: #FFC300;
+    text-align: center;
+}
