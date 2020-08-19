@@ -11,6 +11,7 @@ while True:
     diameter = 4
     i=i%200
     draw.ellipse([(10+i,10+i), (10+diameter+i,10+diameter+i)], fill=(255,255,255,255), outline=(100,100,100,255))
-    img.save('evf.png')
+    img.save('/mnt/guider-temp/evf.png')
     i=i+1
     sleep(4.2)
+    print(".")

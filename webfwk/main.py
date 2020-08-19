@@ -24,7 +24,7 @@ class ReqHandler(BaseHTTPRequestHandler):
 
     def __serveFile(self, filename):
         try:
-            with open("." + filename, "r") as f:
+            with open(filename, "r") as f:
                 self.wfile.write(f.read())
         except:
             self.wfile.write(self.mainPage())
@@ -44,16 +44,18 @@ class ReqHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
+
             self.wfile.write(str(ctx.reqCounter).encode("utf8"))
             return
         # file contents
-        if os.path.isfile("." + self.path):
-            ctype = mimetypes.guess_type("." + self.path)[0]
-            self.send_response(200)
-            self.send_header("Content-type", ctype)
-            self.end_headers()
-            self.__serveFile(self.path)
-            return
+        self.path = "." + self.path
+        if os.path.isfile(self.path):
+           ctype = mimetypes.guess_type(self.path)[0]
+           self.send_response(200)
+           self.send_header("Content-type", ctype)
+           self.end_headers()
+           self.__serveFile(self.path)
+           return
        # 404
         else:
             self.send_response(404)
