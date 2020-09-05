@@ -1,11 +1,11 @@
 // client side
 
-var response = 0;
-var previous = 0;
+var response = "";
+var previous = "";
 
 var evf_pic = "evf.png"
 
-function renderState(response) {
+function changeState(response) {
     console.log("response: " + response)
 }
 function refreshEvf() {
@@ -16,18 +16,17 @@ function refreshEvf() {
 }
 function pollServer() {
     var Httpreq = new XMLHttpRequest();
-    Httpreq.open("GET","/status",false);
+    Httpreq.open("GET","/state",false);
     Httpreq.send(null);
     if (Httpreq.status == 200) {
         response = Httpreq.responseText;
         //document.getElementById('debug').innerHTML = response;
-        console.log("response: " + response)
-        if(response > previous) {
-            renderState(response);
+        if(response != previous) {
+            changeState(response);
         }
         refreshEvf()
         previous = response
     }
 }
 
-window.setInterval(pollServer, 1000);
+window.setInterval(pollServer, 3000);

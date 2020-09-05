@@ -4,9 +4,13 @@ from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 import time, os
 import mimetypes
 
-class CtxHandler():
+class GuiderFSM():
     def __init__(self):
-        self.reqCounter = 0
+        self.states = [ "WAIT-FOR-CAM", "FREE-RUN", "LOCKED", "TRACKING" ]
+        self.currstate = self.states[0]
+
+    def getState(self):
+        return self.currstate
 
     def __enter__(self):
         return self
@@ -31,7 +35,6 @@ class ReqHandler(BaseHTTPRequestHandler):
             pass
 
     def do_GET(self):
-        ctx.reqCounter = ctx.reqCounter + 1
         self.path = self.path.split("?")[0]
         if self.path == "/":
             self.send_response(200)
@@ -40,12 +43,11 @@ class ReqHandler(BaseHTTPRequestHandler):
             self.wfile.write(self.mainPage())
             return
          # status
-        if self.path == "/status":
+        if self.path == "/state":
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
-
-            self.wfile.write(str(ctx.reqCounter).encode("utf8"))
+            self.wfile.write(fsm.getState().encode("utf8"))
             return
         # file contents
         self.path = "." + self.path
@@ -72,6 +74,6 @@ class ReqHandler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    with CtxHandler() as ctx:
+    with GuiderFSM() as fsm:
         httpd = HTTPServer(("localhost", 8000), ReqHandler)
         httpd.serve_forever()
