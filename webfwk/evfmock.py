@@ -14,4 +14,3 @@ while True:
     img.save('/mnt/guider-temp/evf.png')
     i=i+1
     sleep(4.2)
-    print(".")

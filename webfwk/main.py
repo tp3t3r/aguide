@@ -8,9 +8,21 @@ class GuiderFSM():
     def __init__(self):
         self.states = [ "WAIT-FOR-CAM", "FREE-RUN", "LOCKED", "TRACKING" ]
         self.currstate = self.states[0]
+        self.reqcount = 0
+
+    def getReqCount(self): # for mocking purposes
+        return self.reqcount
 
     def getState(self):
+        self.reqcount = self.reqcount + 1
         return self.currstate
+
+    def setState(self, state):
+        print("---set: ",state)
+        if state in self.states:
+            self.currstate = state
+        else:
+            pass
 
     def __enter__(self):
         return self
@@ -35,6 +47,12 @@ class ReqHandler(BaseHTTPRequestHandler):
             pass
 
     def do_GET(self):
+
+        # check FSM changes
+        print("++++", fsm.getReqCount())
+        if fsm.getReqCount() == 5:
+            fsm.setState("FREE-RUN")
+
         self.path = self.path.split("?")[0]
         if self.path == "/":
             self.send_response(200)
@@ -75,5 +93,5 @@ class ReqHandler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     with GuiderFSM() as fsm:
-        httpd = HTTPServer(("localhost", 8000), ReqHandler)
+        httpd = HTTPServer(("0.0.0.0", 8000), ReqHandler)
         httpd.serve_forever()

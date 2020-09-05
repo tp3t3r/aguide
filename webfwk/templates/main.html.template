@@ -18,8 +18,8 @@
             <textarea id='infolog' class='infolog' disabled></textarea>
             <div class='button-container'>
                 <form action='#' method='get'>
-                    <input type='hidden' name='current_state' value='%s'>
-                    <input class='button' type='submit' value='%s'>
+                    <input id='button_val' type='hidden' name='current_state' value=''>
+                    <input id='button_text' class='button' type='submit' value=''>
                 </form>
             </div>
         </div>
